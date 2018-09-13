@@ -1,3 +1,6 @@
+#ifndef TRIANGLE
+#define TRIANGLE
+
 #include "Shape.h"
 using namespace std;
 
@@ -6,6 +9,8 @@ class Triangle : public Shape {
 
     public:
         Triangle(float* p1, float* p2, float* p3);
-        virtual float** get();
+        float** get();
         void print();
 };
+
+#endif

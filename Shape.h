@@ -1,12 +1,17 @@
+#ifndef SHAPE
+#define SHAPE
+
 using namespace std;
 
 class Shape {
-    protected:
+    public: // CHECK change to protected
         float ** points_;
         unsigned int npoints_;
 
-    public:
+    //public:
         Shape();
-        ~Shape();
-        virtual float** get() const = 0;
+        ~Shape(); // CHECK make virtual
+        //virtual float** get() const = 0;
 };
+
+#endif
