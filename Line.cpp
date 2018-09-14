@@ -1,4 +1,4 @@
-#include "Triangle.h"
+#include "Line.h"
 
 // REMOVE
 #include <iostream>
@@ -7,8 +7,8 @@ using namespace std;
 
 #define NDIMS 2 // CHECK move
 
-Triangle::Triangle(float* p0, float* p1, float* p2){
-    this->npoints_ = 3;
+Line::Line(float* p0, float* p1){
+    this->npoints_ = 2;
     this->points_  = new float*[this->npoints_];
 
     for (unsigned int i = 0; i < this->npoints_; i++)
@@ -18,17 +18,15 @@ Triangle::Triangle(float* p0, float* p1, float* p2){
         this->points_[0][i] = p0[i];
     for (unsigned int i = 0; i < NDIMS; i++)
         this->points_[1][i] = p1[i];
-    for (unsigned int i = 0; i < NDIMS; i++)
-        this->points_[2][i] = p2[i];
 }
 
-float** Triangle::get(){
+float** Line::get(){
     cout << "gotten" << endl;
     return this->points_;
 }
 
-void Triangle::print(){
-    cout << "Triangle with points: " << endl;
+void Line::print(){
+    cout << "Line with points: " << endl;
     for (unsigned int i = 0; i < this->npoints_; i++){
         for (unsigned int j = 0; j < NDIMS; j++){
             cout << " " << this->points_[i][j];

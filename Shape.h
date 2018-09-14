@@ -1,5 +1,5 @@
-#ifndef SHAPE
-#define SHAPE
+#ifndef SHAPE_H_
+#define SHAPE_H_
 
 using namespace std;
 
@@ -11,6 +11,7 @@ class Shape {
     //public:
         Shape();
         ~Shape(); // CHECK make virtual
+        virtual void print() = 0;
         //virtual float** get() const = 0;
 };
 
