@@ -4,11 +4,11 @@
 using namespace std;
 
 class Shape {
-    public: // CHECK change to protected
+    protected: // CHECK change to protected
         float ** points_;
         unsigned int npoints_;
 
-    //public:
+    public:
         Shape();
         ~Shape(); // CHECK make virtual
         virtual void print() = 0;
