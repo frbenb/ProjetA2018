@@ -134,9 +134,20 @@ void Mesh::print(){
 
 void save_to_tecplot(string filename){
 
+    cout << "Saving to : " << filename << endl;
+
     ofstream tecplot_file;
     tecplot_file.open(filename);
 
+    tecplot_file << "VARIABLES=\"X\",\"Y\",\"RO\",\"U\",\"V\",\"P\"\n";
+    tecplot_file << "ZONE T=\"FLOW_FIELD\" i=" << _imax << " j=" << _jmax << "\n"; // CHECK change to imax and jmax
+
+    for (int j = 2; j <= _jmax+1; j++){
+        for (int i = 2; i <= _imax+1; i++){
+            tecplot_file << _x[i][j] << " " << _y[i][j] << " " << _rocv[i][j] << " " << _uucv[i][j] << " " << _vvcv[i][j] << " " << _ppcv[i][j] << "\n";
+        }
+    }
 
     tecplot_file.close();
+    out << "Saved to : " << filename << endl;
 }
