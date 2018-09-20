@@ -132,7 +132,7 @@ void Mesh::print(){
     }
 }
 
-void save_to_tecplot(string filename){
+void write_tecplot(string filename){
 
     cout << "Saving to : " << filename << endl;
 

@@ -17,7 +17,8 @@ class Mesh {
         //virtual float** get() const = 0;
         void print();
         void read_su2(string filename);
-        void save_to_tecplot(string filename) const;
+        void read_tecplot(string filename);
+        void write_tecplot(string filename) const;
 };
 
 #endif
