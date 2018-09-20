@@ -1,14 +1,14 @@
 #ifndef MESH_H_
 #define MESH_H_
 
-#include "Shape.h"
+//#include "Shape.h"
 #include <string>
 
 using namespace std;
 
 class Mesh {
     private:
-        Shape** shapes_; // CHECK if should be single ptr
+        //Shape** shapes_; // CHECK if should be single ptr
         unsigned int nshapes_;
 
     public:
