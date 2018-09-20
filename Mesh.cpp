@@ -149,5 +149,37 @@ void write_tecplot(string filename){
     }
 
     tecplot_file.close();
-    out << "Saved to : " << filename << endl;
+    cout << "Saved to : " << filename << endl;
+}
+
+void read_tecplot(string filename){
+    unsigned int nblocks, imax, jmax, i, j;
+    double point_coord;
+
+    cout << "Filename: " << filename << endl;
+
+    ifstream meshfile;
+    meshfile.open(filename);
+
+    meshfile >> nblocks;
+    if (nblocks > 1){
+        cout << "Input meshes should only have 1 block" << endl;
+    }
+
+    meshfile >> imax >> jmax;
+
+    for (j=2;j<=_rjmax+1;j++){
+        for (i=2;i<=_rimax+1;i++){
+            meshfile >> point_coord;
+            _x[i][j]=point_coord/_cmac; // cmac should be defined
+        }
+    }
+    for (j=2;j<=_rjmax+1;j++){
+        for (i=2;i<=_rimax+1;i++){
+            meshfile >> point_coord;
+            _y[i][j]=point_coord/_cmac;
+        }
+    }
+
+    meshfile.close();
 }
