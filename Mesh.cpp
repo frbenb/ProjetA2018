@@ -1,11 +1,7 @@
 #include "Mesh.h"
-#include "Shape.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Triangle.h"
-#include "Quad.h"
-#include "Line.h"
 
 using namespace std;
 
