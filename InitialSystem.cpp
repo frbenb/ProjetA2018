@@ -1,5 +1,5 @@
 #include "InitialSystem.h"
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
 InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300), rungekutta_(5),
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(0), uInfini_(0), vInfini_(0), pInfini_(0), 
