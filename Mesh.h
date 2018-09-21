@@ -17,7 +17,7 @@ class Mesh {
             void write_tecplot(string filename);
 	
 	private:
-            InitialSystem* NSC_;
+            InitialSystem* initSyst_;
             unsigned int imax_, jmax_;
             unsigned int imaxGhost_, jmaxGhost_;
             unsigned int nbKnots_;        	//total number of knots

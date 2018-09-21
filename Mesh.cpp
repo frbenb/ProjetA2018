@@ -177,13 +177,13 @@ void Mesh::read_tecplot(string filename){
     for (j = 2; j <= rjmax_+1; j++){
         for (i = 2; i <= rimax_+1; i++){
             meshfile >> point_coord;
-            x_[i][j]=point_coord/NSC_->getCmac(); // cmac should be defined in NSC
+            x_[i][j]=point_coord/initSyst_->getCmac(); // cmac should be defined in NSC
         }
     }
     for (j = 2; j <= rjmax_+1; j++){
         for (i=2; i <= rimax_+1; i++){
             meshfile >> point_coord;
-            y_[i][j]=point_coord/NSC_->getCmac(); // cmac should be defined in NSC
+            y_[i][j]=point_coord/initSyst_->getCmac(); // cmac should be defined in NSC
         }
     }
 
