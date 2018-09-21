@@ -1,10 +1,11 @@
-#ifndef INITIALSYSTEM_H
-#define INITIALSYSTEM_H
+#ifndef INITIALSYSTEM_H_
+#define INITIALSYSTEM_H_
 
 class InitialSystem
 {
 public:
-	void initialSystem(); //Constructor
+	InitialSystem(); //Constructor
+  ~InitialSystem();
 
   //Get methods:
   float getPi() const;
@@ -49,6 +50,6 @@ private:
 
   /*convergence*/
   float rms0_;
-}
+};
 
 #endif
