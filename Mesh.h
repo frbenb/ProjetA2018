@@ -15,6 +15,28 @@ class Mesh {
             void read_su2(string filename);
             void read_tecplot(string filename);
             void write_tecplot(string filename);
+
+            void iterate_pseudo_timestep(int level, int nstage);
+
+            void timestep();
+                
+            void iteratestep();
+
+            void save_w0();
+
+            void spectral_radius(int level);
+
+            void residual(int level, double beta, int istage,int dissip);
+
+            void eflux(int level);
+
+            void dflux(int level, int beta);
+
+            void dflux2(int level, int beta);
+
+            void update_solution();
+
+            void update_boundary();
 	
 	private:
             InitialSystem* NSC_;

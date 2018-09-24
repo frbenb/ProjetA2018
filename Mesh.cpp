@@ -189,3 +189,212 @@ void Mesh::read_tecplot(string filename){
 
     meshfile.close();
 }
+void Mesh::iterate_pseudo_timestep(int level, int nstage)
+{
+    int istage;
+
+    //Computation of the timestep.
+    timestep();
+    save_w0();
+
+    for (istage=0;istage<nstage;istage++)
+    {
+        // TO CODE Here
+        spectral_radius(level);
+
+        residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        
+        update_solution(); // Implementation needed.
+        update_boundary(); // Implementation needed.
+
+    }
+
+
+}
+
+void Mesh::update_solution()
+{
+    //TBD.
+}
+
+void Mesh::update_boundary()
+{
+    //TBD
+}
+
+void Mesh::timestep()
+{
+    unsigned int i, j;
+    double **dt, **area, **speci, **specj;
+
+    dt = deltaT_;
+    area = cellArea_;
+    speci = speci_;
+    specj = specj_;
+
+    for(j=2;j<= rjmax_;j++)
+    {
+        for(i=2; i<=rimax_;i++)
+        {
+            
+           dt[i][j]= NSC_->cfl_ * area[i][j]/(speci[i][j]+specj[i][j]);
+        }
+
+    }
+    
+}
+
+void Mesh::save_w0()
+{
+    unsigned int i,j;
+    double g, **ro, **uu, **vv, **pp;
+    double **ro0, **ru0, **rv0, **re0; // Conservative variables.
+
+    g = NSC_->gamma_;
+
+    ro = rho_;
+    uu = u_;
+    vv = v_;
+    pp = p_;
+
+    ro0 = rho_0_;
+    ru0 = u_0_;
+    rv0 = v_0_;
+    re0 = p_0_;
+
+    for (j=0; j<=jmaxGhost_;j++)
+    {
+        for(i=0; i<=imaxGhost_;i++)
+        {
+            ro0[i][j] = ro[i][j];
+            ru0[i][j] = ro[i][j]*uu[i][j];
+            rv0[i][j] = ro[i][j]*vv[i][j];
+            re0[i][j] = 0.5*ro[i][j] * (uu[i][j] * uu[i][j] + vv[i][j] * vv[i][j]) + 1./(g-1.)*pp[i][j];
+        }
+
+    }
+
+    return;
+
+}
+
+
+void Mesh::spectral_radius(int level)
+{
+    unsigned int i,j;
+    double **ro,**uu,**vv,**pp,g,**six,**siy,sx,sy,u_dot_n,cc;
+
+    g=NSC_->gamma_;
+  
+    ro=rho_;
+    uu=u_;
+    vv=v_;
+    pp=p_;
+
+    /* in i */
+    six=normal_i_x_;
+    siy=normal_i_y_;
+
+    for (j=1;j<=rjmax_+1;j++)
+    {
+        for (i=1;i<=rimax_+1;i++)
+        {
+            sx=0.5*(six[i][j]+six[i+1][j]);
+            sy=0.5*(siy[i][j]+siy[i+1][j]);
+            u_dot_n=uu[i][j]*sx+vv[i][j]*sy;
+            cc=g*pp[i][j]/ro[i][j];
+
+            speci_[i][j]= abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
+        }
+    }
+  
+    /* in j */
+    six=normal_j_x_;
+    siy=normal_j_y_;
+
+    for (j=1;j<=rjmax_+1;j++)
+    {
+        for (i=1;i<=rimax_+1;i++)
+        {
+            sx=0.5*(six[i][j]+six[i][j+1]);
+            sy=0.5*(siy[i][j]+siy[i][j+1]);
+            u_dot_n=uu[i][j]*sx+vv[i][j]*sy;
+            cc=g*pp[i][j]/ro[i][j];
+
+            specj_[i][j]=abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
+        }
+    }
+
+    return;
+
+
+}
+
+void Mesh::residual(int level, double beta, int istage,int dissip)
+{
+    unsigned int i,j;
+
+    for (j=0;j<=jmaxGhost_;j++)
+    {
+        for (i=0;i<=imaxGhost_;i++)
+        {
+            residualInviscid_rho_[i][j]=0.;
+            residualInviscid_u_[i][j]=0.;
+            residualInviscid_v_[i][j]=0.;
+            residualInviscid_p_[i][j]=0.;
+        }
+    }
+  if (istage==0)
+  {
+    for (j=0;j<=jmaxGhost_;j++)
+    {
+      for (i=0;i<=imaxGhost_;i++)
+      {
+        residualDissip_rho_[i][j]=0.;
+        residualDissip_u_[i][j]=0.;
+        residualDissip_v_[i][j]=0.;
+        residualDissip_p_[i][j]=0.;
+      }
+    }
+  }
+
+  eflux(level);
+  
+  if(beta>NSC_->epsilon_)
+  {
+    if (dissip==1)dflux(level,beta);
+    if (dissip==2)dflux2(level,beta);
+  }
+  
+  for (j=0;j<=jmaxGhost_;j++)
+  {
+    for (i=0;i<=imaxGhost_;i++)
+    {
+        residualInviscid_rho_[i][j]+=residualDissip_rho_[i][j];
+        residualInviscid_u_[i][j]+=residualDissip_u_[i][j];
+        residualInviscid_v_[i][j]+=residualDissip_v_[i][j];
+        residualInviscid_p_[i][j]+=residualDissip_p_[i][j];
+    }
+  }
+
+  return;
+
+}
+
+void Mesh::eflux(int level)
+{
+    //TBD.
+}
+
+void Mesh::dflux(int level, int beta)
+{
+    //TBD.
+
+}
+
+void Mesh::dflux2(int level, int beta)
+{
+    //TBD.
+
+}
+
