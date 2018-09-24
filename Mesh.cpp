@@ -1,28 +1,71 @@
+
 #include "Mesh.h"
-#include "Shape.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "Triangle.h"
-#include "Quad.h"
-#include "Line.h"
+
+#include "Mesh.h"
 
 using namespace std;
 
 #define NDIMS 2 // CHECK move
 
-Mesh::Mesh() : imax_(0), jmax_(0), imaxGhost_(0), jmaxGhost_(0), nbKnots_(0), numberOfCells_(0), 
-                rimax_(0), rjmax_(0), inci_(0), incj_(0), x_(nullptr), y_(nullptr), cellArea_(nullptr),
-                normal_i_x_(nullptr), normal_i_y_(nullptr), normal_j_x_(nullptr), normal_j_y_(nullptr), 
-                rho_(nullptr), u_(nullptr), v_(nullptr), p_(nullptr), rho_nodes_(nullptr), 
-                u_nodes_(nullptr), v_nodes_(nullptr), p_nodes_(nullptr), rho_0_(nullptr), u_0_(nullptr), 
-                v_0_(nullptr), p_0_(nullptr), residualInviscid_rho_(nullptr), residualInviscid_u_(nullptr),
-                residualInviscid_v_(nullptr), residualInviscid_p_(nullptr), residualDissip_rho_(nullptr),
-                residualDissip_u_(nullptr), residualDissip_v_(nullptr), residualDissip_p_(nullptr),
-                tmp_rho_(nullptr), tmp_u_(nullptr), tmp_v_(nullptr), tmp_p_(nullptr), deltaT_(nullptr),
-                speci_(nullptr), specj_(nullptr){}
+Mesh::Mesh() : imax_(0), 
+                jmax_(0), 
+                imaxGhost_(0), 
+                jmaxGhost_(0), 
+                nbKnots_(0), 
+                numberOfCells_(0), 
+                rimax_(0), rjmax_(0), 
+                inci_(0), 
+                incj_(0), 
+                x_(nullptr), 
+                y_(nullptr), 
+                cellArea_(nullptr),
+                normal_i_x_(nullptr), 
+                normal_i_y_(nullptr), 
+                normal_j_x_(nullptr), 
+                normal_j_y_(nullptr), 
+                rho_(nullptr), 
+                u_(nullptr), 
+                v_(nullptr), 
+                p_(nullptr), 
+                rho_nodes_(nullptr), 
+                u_nodes_(nullptr), 
+                v_nodes_(nullptr), 
+                p_nodes_(nullptr), 
+                rho_0_(nullptr), 
+                u_0_(nullptr), 
+                v_0_(nullptr), 
+                p_0_(nullptr), 
+                residualInviscid_rho_(nullptr), 
+                residualInviscid_u_(nullptr),
+                residualInviscid_v_(nullptr), 
+                residualInviscid_p_(nullptr), 
+                residualDissip_rho_(nullptr),
+                residualDissip_u_(nullptr), 
+                residualDissip_v_(nullptr), 
+                residualDissip_p_(nullptr),
+                tmp_rho_(nullptr), 
+                tmp_u_(nullptr), 
+                tmp_v_(nullptr), 
+                tmp_p_(nullptr), 
+                deltaT_(nullptr),
+                speci_(nullptr), 
+                specj_(nullptr){}
+Mesh::~Mesh()
+{
+    /*for (unsigned int i = 0; i < nshapes_; i++){
+        delete [] shapes_[i];
+    }
 
-void Mesh::read_su2(string filename){
+    shapes_ = nullptr;
+    nshapes_ = 0;*/
+}
+
+void Mesh::read_su2(string filename)
+{
     /*if (shapes_ != nullptr){
         for (unsigned int i = 0; i < nshapes_; i++){
             delete [] shapes_[i];
@@ -125,21 +168,14 @@ void Mesh::read_su2(string filename){
     }*/
 }
 
-Mesh::~Mesh(){
+
+void Mesh::print(){
+
     /*for (unsigned int i = 0; i < nshapes_; i++){
-        delete [] shapes_[i];
-    }
-
-    shapes_ = nullptr;
-    nshapes_ = 0;*/
-}
-
-/*void Mesh::print(){
-
-    for (unsigned int i = 0; i < nshapes_; i++){
         shapes_[i]->print();
-    }
-}*/
+    }*/
+    
+}
 
 void Mesh::write_tecplot(string filename){
 
@@ -151,8 +187,8 @@ void Mesh::write_tecplot(string filename){
     tecplot_file << "VARIABLES=\"X\",\"Y\",\"RO\",\"U\",\"V\",\"P\"\n";
     tecplot_file << "ZONE T=\"FLOW_FIELD\" i=" << imax_ << " j=" << jmax_ << "\n"; // CHECK change to imax and jmax
 
-    for (int j = 2; j <= jmax_+1; j++){
-        for (int i = 2; i <= imax_+1; i++){
+    for (unsigned int j = 2; j <= jmax_+1; j++){
+        for (unsigned int i = 2; i <= imax_+1; i++){
             tecplot_file << x_[i][j] << " " << y_[i][j] << " " << rho_nodes_[i][j] << " " << u_nodes_[i][j] << " " << v_nodes_[i][j] << " " << p_nodes_[i][j] << "\n";
         }
     }
@@ -177,18 +213,233 @@ void Mesh::read_tecplot(string filename){
 
     meshfile >> imax >> jmax;
 
+
     for (j = 2; j <= rjmax_+1; j++){
         for (i = 2; i <= rimax_+1; i++){
             meshfile >> point_coord;
-            x_[i][j]=point_coord/NSC_._cmac; // cmac should be defined in NSC
+            x_[i][j]=point_coord/ NSC_->cmac_; // cmac should be defined in NSC
         }
     }
     for (j = 2; j <= rjmax_+1; j++){
         for (i=2; i <= rimax_+1; i++){
             meshfile >> point_coord;
-            y_[i][j]=point_coord/NSC_._cmac; // cmac should be defined in NSC
+            y_[i][j]=point_coord/NSC_->cmac_; // cmac should be defined in NSC
         }
     }
 
     meshfile.close();
 }
+
+
+void Mesh::iterate_pseudo_timestep(int level, int nstage)
+{
+    int istage;
+
+    //Computation of the timestep.
+    timestep();
+    save_w0();
+
+    for (istage=0;istage<nstage;istage++)
+    {
+        // TO CODE Here
+        spectral_radius(level);
+
+        residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        
+        update_solution(); // Implementation needed.
+        update_boundary(); // Implementation needed.
+
+    }
+
+
+}
+
+void Mesh::update_solution()
+{
+    //TBD.
+}
+
+void Mesh::update_boundary()
+{
+    //TBD
+}
+
+void Mesh::timestep()
+{
+    unsigned int i, j;
+    double **dt, **area, **speci, **specj;
+
+    dt = deltaT_;
+    area = cellArea_;
+    speci = speci_;
+    specj = specj_;
+
+    for(j=2;j<= rjmax_;j++)
+    {
+        for(i=2; i<=rimax_;i++)
+        {
+            
+           dt[i][j]= NSC_->cfl_ * area[i][j]/(speci[i][j]+specj[i][j]);
+        }
+
+    }
+    
+}
+
+void Mesh::save_w0()
+{
+    unsigned int i,j;
+    double g, **ro, **uu, **vv, **pp;
+    double **ro0, **ru0, **rv0, **re0; // Conservative variables.
+
+    g = NSC_->gamma_;
+
+    ro = rho_;
+    uu = u_;
+    vv = v_;
+    pp = p_;
+
+    ro0 = rho_0_;
+    ru0 = u_0_;
+    rv0 = v_0_;
+    re0 = p_0_;
+
+    for (j=0; j<=jmaxGhost_;j++)
+    {
+        for(i=0; i<=imaxGhost_;i++)
+        {
+            ro0[i][j] = ro[i][j];
+            ru0[i][j] = ro[i][j]*uu[i][j];
+            rv0[i][j] = ro[i][j]*vv[i][j];
+            re0[i][j] = 0.5*ro[i][j] * (uu[i][j] * uu[i][j] + vv[i][j] * vv[i][j]) + 1./(g-1.)*pp[i][j];
+        }
+
+    }
+
+    return;
+
+}
+
+
+void Mesh::spectral_radius(int level)
+{
+    unsigned int i,j;
+    double **ro,**uu,**vv,**pp,g,**six,**siy,sx,sy,u_dot_n,cc;
+
+    g=NSC_->gamma_;
+  
+    ro=rho_;
+    uu=u_;
+    vv=v_;
+    pp=p_;
+
+    /* in i */
+    six=normal_i_x_;
+    siy=normal_i_y_;
+
+    for (j=1;j<=rjmax_+1;j++)
+    {
+        for (i=1;i<=rimax_+1;i++)
+        {
+            sx=0.5*(six[i][j]+six[i+1][j]);
+            sy=0.5*(siy[i][j]+siy[i+1][j]);
+            u_dot_n=uu[i][j]*sx+vv[i][j]*sy;
+            cc=g*pp[i][j]/ro[i][j];
+
+            speci_[i][j]= abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
+        }
+    }
+  
+    /* in j */
+    six=normal_j_x_;
+    siy=normal_j_y_;
+
+    for (j=1;j<=rjmax_+1;j++)
+    {
+        for (i=1;i<=rimax_+1;i++)
+        {
+            sx=0.5*(six[i][j]+six[i][j+1]);
+            sy=0.5*(siy[i][j]+siy[i][j+1]);
+            u_dot_n=uu[i][j]*sx+vv[i][j]*sy;
+            cc=g*pp[i][j]/ro[i][j];
+
+            specj_[i][j]=abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
+        }
+    }
+
+    return;
+
+
+}
+
+void Mesh::residual(int level, double beta, int istage,int dissip)
+{
+    unsigned int i,j;
+
+    for (j=0;j<=jmaxGhost_;j++)
+    {
+        for (i=0;i<=imaxGhost_;i++)
+        {
+            residualInviscid_rho_[i][j]=0.;
+            residualInviscid_u_[i][j]=0.;
+            residualInviscid_v_[i][j]=0.;
+            residualInviscid_p_[i][j]=0.;
+        }
+    }
+  if (istage==0)
+  {
+    for (j=0;j<=jmaxGhost_;j++)
+    {
+      for (i=0;i<=imaxGhost_;i++)
+      {
+        residualDissip_rho_[i][j]=0.;
+        residualDissip_u_[i][j]=0.;
+        residualDissip_v_[i][j]=0.;
+        residualDissip_p_[i][j]=0.;
+      }
+    }
+  }
+
+  eflux(level);
+  
+  if(beta>NSC_->epsilon_)
+  {
+    if (dissip==1)dflux(level,beta);
+    if (dissip==2)dflux2(level,beta);
+  }
+  
+  for (j=0;j<=jmaxGhost_;j++)
+  {
+    for (i=0;i<=imaxGhost_;i++)
+    {
+        residualInviscid_rho_[i][j]+=residualDissip_rho_[i][j];
+        residualInviscid_u_[i][j]+=residualDissip_u_[i][j];
+        residualInviscid_v_[i][j]+=residualDissip_v_[i][j];
+        residualInviscid_p_[i][j]+=residualDissip_p_[i][j];
+    }
+  }
+
+  return;
+
+}
+
+void Mesh::eflux(int level)
+{
+    //TBD.
+}
+
+void Mesh::dflux(int level, int beta)
+{
+    //TBD.
+
+}
+
+void Mesh::dflux2(int level, int beta)
+{
+    //TBD.
+
+}
+
+
+
+

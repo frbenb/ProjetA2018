@@ -2,7 +2,11 @@
 #define MESH_H_
 
 #include <string>
-#include "InitialSystem.h"
+#include <iostream>
+#include <math.h>
+
+
+#include "initialSystem.h"
 
 using namespace std;
 
@@ -11,12 +15,36 @@ class Mesh {
                 Mesh();
                 ~Mesh();
 
+                void print();
+                
                 //double geometryCalculation();
                 void read_su2(string filename);
                 void read_tecplot(string filename);
                 void write_tecplot(string filename);
-	
-	private:
+
+                void iterate_pseudo_timestep(int level, int nstage);
+
+                void timestep();
+                
+                void iteratestep();
+
+                void save_w0();
+
+                void spectral_radius(int level);
+
+                void residual(int level, double beta, int istage,int dissip);
+
+                void eflux(int level);
+
+                void dflux(int level, int beta);
+
+                void dflux2(int level, int beta);
+
+                void update_solution();
+
+                void update_boundary();
+
+        public: 
                 unsigned int imax_, jmax_;
                 unsigned int imaxGhost_, jmaxGhost_;
                 unsigned int nbKnots_;        	//total number of knots
@@ -59,6 +87,14 @@ class Mesh {
                 double** deltaT_;
                 double** speci_;
                 double** specj_;
+
+                // Object Initial system containing attributes for NSC_
+                InitialSystem *NSC_;
+          
+        private:
+
+
+
 };
 
 #endif

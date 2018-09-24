@@ -1,10 +1,11 @@
 #ifndef INITIALSYSTEM_H
 #define INITIALSYSTEM_H
 
+
 class InitialSystem
 {
 public:
-	void initialSystem(); //Constructor
+	InitialSystem(); //Default Constructor.
 
   //Get methods:
   float getPi() const;
@@ -31,17 +32,30 @@ public:
 
   float getrms0() const; //rms0?
 
-private:
-  float pi_, gamma_, epsilon_; 
 
+  //Attributes.
+public: 
+
+  float pi_;
+  float gamma_;
+  float epsilon_; 
+  float cmac_;
 	/* constants from "input file" */
-  unsigned int dissip_, nbiter_, rungekutta_;
+  int dissip_;
+  int nbiter_;
+  int rungekutta_;
 
   /* flow & geometry properties */
-	float mach_, alpha_, reynolds_; //from "input file"
+	float mach_;
+  float alpha_;
+  float reynolds_; //from "input file"
   float tinf_;
-	float xref_, yref_, cmac_; //from "input file"
-  float rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+	float xref_;
+  float yref_; //from "input file"
+  float rhoInfini_;
+  float uInfini_;
+  float vInfini_;
+  float pInfini_; //rho_free, u_free, v_free, p_free
   
   /*constant cl run */
   float cltarget_;
@@ -49,6 +63,17 @@ private:
 
   /*convergence*/
   float rms0_;
-}
+
+  //Sover
+  float cfl_;
+
+  //Variables of Runge Kutta
+  double rk_alfa[5];
+  double rk_beta[5];
+
+
+  private:
+
+};
 
 #endif
