@@ -2,6 +2,7 @@
 #define MESH_H_
 
 #include <string>
+#include "math.h"
 #include "InitialSystem.h"
 
 using namespace std;

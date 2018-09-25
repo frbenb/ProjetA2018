@@ -236,7 +236,6 @@ void Mesh::timestep()
     {
         for(i=2; i<=rimax_;i++)
         {
-            
            dt[i][j]= NSC_->cfl_ * area[i][j]/(speci[i][j]+specj[i][j]);
         }
 
@@ -249,7 +248,7 @@ void Mesh::save_w0()
     unsigned int i,j;
     double g, **ro, **uu, **vv, **pp;
     double **ro0, **ru0, **rv0, **re0; // Conservative variables.
-
+    
     g = NSC_->gamma_;
 
     ro = rho_;
@@ -284,7 +283,7 @@ void Mesh::spectral_radius(int level)
     unsigned int i,j;
     double **ro,**uu,**vv,**pp,g,**six,**siy,sx,sy,u_dot_n,cc;
 
-    g=NSC_->gamma_;
+    g=NSC_->getGamma();
   
     ro=rho_;
     uu=u_;

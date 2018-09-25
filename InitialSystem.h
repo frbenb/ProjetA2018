@@ -32,7 +32,11 @@ public:
 
   float getrms0() const; //rms0?
 
-private:
+  float getCfl() const;
+
+
+public:
+
   float pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
@@ -50,6 +54,14 @@ private:
 
   /*convergence*/
   float rms0_;
+
+
+  float cfl_;
+
+  float rk_beta[5];
+  float rk_alpha[5];
+
+
 };
 
 #endif
