@@ -8,7 +8,7 @@ using namespace std;
 
 class Mesh {
 	public:
-            Mesh();
+            Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu);
             ~Mesh();
 
             const void print();
@@ -20,7 +20,7 @@ class Mesh {
 	
 	private:
             InitialSystem* initSyst_;
-            unsigned int imax_, jmax_;
+            unsigned int imax_, jmax_, itl_, itu_;
             unsigned int imaxGhost_, jmaxGhost_;
             unsigned int nbKnots_;        	//total number of knots
             unsigned int numberOfCells_;	//total number of cells

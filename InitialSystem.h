@@ -1,11 +1,18 @@
 #ifndef INITIALSYSTEM_H_
 #define INITIALSYSTEM_H_
 
+#include <string>
+#include "Mesh.h"
+
+using namespace std;
+
 class InitialSystem
 {
 public:
 	InitialSystem(); //Constructor
   ~InitialSystem();
+
+  void readctrl(string controlFileName);
 
   //Get methods:
   float getPi() const;
@@ -33,6 +40,8 @@ public:
   float getrms0() const; //rms0?
 
 private:
+  Mesh* mesh_;
+  string ctrlfilename_, meshfilename_, title_;
   float pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
