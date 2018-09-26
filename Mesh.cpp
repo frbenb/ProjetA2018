@@ -13,80 +13,82 @@ Mesh::Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int 
                 nbKnots_((imax+3)*(jmax+3)), numberOfCells_((imax+2)*(jmax+2)), 
                 rimax_(imax), rjmax_(jmax), inci_(jmax + 3), incj_(1){
 
-
-
-    /*x_(nullptr), y_(nullptr), cellArea_(nullptr),
-                normal_i_x_(nullptr), normal_i_y_(nullptr), normal_j_x_(nullptr), normal_j_y_(nullptr), 
-                rho_(nullptr), u_(nullptr), v_(nullptr), p_(nullptr), rho_nodes_(nullptr), 
-                u_nodes_(nullptr), v_nodes_(nullptr), p_nodes_(nullptr), rho_0_(nullptr), u_0_(nullptr), 
-                v_0_(nullptr), p_0_(nullptr), residualInviscid_rho_(nullptr), residualInviscid_u_(nullptr),
-                residualInviscid_v_(nullptr), residualInviscid_p_(nullptr), residualDissip_rho_(nullptr),
-                residualDissip_u_(nullptr), residualDissip_v_(nullptr), residualDissip_p_(nullptr),
-                tmp_rho_(nullptr), tmp_u_(nullptr), tmp_v_(nullptr), tmp_p_(nullptr), deltaT_(nullptr),
-                speci_(nullptr), specj_(nullptr)*/
-
-    char mess[STLEN];
-    S_mesh *tmp,*mesh;
-
-    tmp = (S_mesh *)malloc(sizeof(S_mesh));
-    if(tmp==NULL)
-    {
-        sprintf(mess,"mesh on level %d can not be allocated",level);
-        printerror(mess);
-    }
-    mesh=tmp;
-
     // himax is imaxGhost_
     // hjmax is jmaxGhost_
 
     x_ = new double*[imaxGhost_+1];
+    y_ = new double*[imaxGhost_+1];
+    cellArea_ = new double*[imaxGhost_+1];
+    normal_i_x_ = new double*[imaxGhost_+1];
+    normal_i_y_ = new double*[imaxGhost_+1];
+    normal_j_x_ = new double*[imaxGhost_+1];
+    normal_j_y_ = new double*[imaxGhost_+1];
+    rho_ = new double*[imaxGhost_+1];
+    u_ = new double*[imaxGhost_+1];
+    v_ = new double*[imaxGhost_+1];
+    p_ = new double*[imaxGhost_+1];
+    rho_nodes_ = new double*[imaxGhost_+1];
+    u_nodes_ = new double*[imaxGhost_+1];
+    v_nodes_ = new double*[imaxGhost_+1];
+    p_nodes_ = new double*[imaxGhost_+1];
+    rho_0_ = new double*[imaxGhost_+1];
+    u_0_ = new double*[imaxGhost_+1];
+    v_0_ = new double*[imaxGhost_+1];
+    p_0_ = new double*[imaxGhost_+1];
+    speci_ = new double*[imaxGhost_+1];
+    specj_ = new double*[imaxGhost_+1];
+    deltaT_ = new double*[imaxGhost_+1];
+    residualInviscid_rho_ = new double*[imaxGhost_+1];
+    residualInviscid_u_ = new double*[imaxGhost_+1];
+    residualInviscid_v_ = new double*[imaxGhost_+1];
+    residualInviscid_p_ = new double*[imaxGhost_+1];
+    residualDissip_rho_ = new double*[imaxGhost_+1];
+    residualDissip_u_ = new double*[imaxGhost_+1];
+    residualDissip_v_ = new double*[imaxGhost_+1];
+    residualDissip_p_ = new double*[imaxGhost_+1];
+    tmp_rho_ = new double*[imaxGhost_+1];
+    tmp_u_ = new double*[imaxGhost_+1];
+    tmp_v_ = new double*[imaxGhost_+1];
+    tmp_p_ = new double*[imaxGhost_+1];
+
     for (unsigned int i = 0; i < imaxGhost_+1; i++){
         x_[i] = new double[jmaxGhost_+1];
+        y_[i] = new double[jmaxGhost_+1];
+        cellArea_[i] = new double[jmaxGhost_+1];
+        normal_i_x_[i] = new double[jmaxGhost_+1];
+        normal_i_y_[i] = new double[jmaxGhost_+1];
+        normal_j_x_[i] = new double[jmaxGhost_+1];
+        normal_j_y_[i] = new double[jmaxGhost_+1];
+        rho_[i] = new double[jmaxGhost_+1];
+        u_[i] = new double[jmaxGhost_+1];
+        v_[i] = new double[jmaxGhost_+1];
+        p_[i] = new double[jmaxGhost_+1];
+        rho_nodes_[i] = new double[jmaxGhost_+1];
+        u_nodes_[i] = new double[jmaxGhost_+1];
+        v_nodes_[i] = new double[jmaxGhost_+1];
+        p_nodes_[i] = new double[jmaxGhost_+1];
+        rho_0_[i] = new double[jmaxGhost_+1];
+        u_0_[i] = new double[jmaxGhost_+1];
+        v_0_[i] = new double[jmaxGhost_+1];
+        p_0_[i] = new double[jmaxGhost_+1];
+        speci_[i] = new double[jmaxGhost_+1];
+        specj_[i] = new double[jmaxGhost_+1];
+        deltaT_[i] = new double[jmaxGhost_+1];
+        residualInviscid_rho_[i] = new double[jmaxGhost_+1];
+        residualInviscid_u_[i] = new double[jmaxGhost_+1];
+        residualInviscid_v_[i] = new double[jmaxGhost_+1];
+        residualInviscid_p_[i] = new double[jmaxGhost_+1];
+        residualDissip_rho_[i] = new double[jmaxGhost_+1];
+        residualDissip_u_[i] = new double[jmaxGhost_+1];
+        residualDissip_v_[i] = new double[jmaxGhost_+1];
+        residualDissip_p_[i] = new double[jmaxGhost_+1];
+        tmp_rho_[i] = new double[jmaxGhost_+1];
+        tmp_u_[i] = new double[jmaxGhost_+1];
+        tmp_v_[i] = new double[jmaxGhost_+1];
+        tmp_p_[i] = new double[jmaxGhost_+1];
     }
     // fill other in loop, check that all in big comment above are dealt with, 
     // fill destructor, fix read functions, finish readCtrl, don't forget for read stuff to delete ry.
-
-
-    mesh->y   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"y");
-
-    mesh->area = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"area");
-    mesh->six  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"six");
-    mesh->siy  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"siy");
-    mesh->sjx  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"sjx");
-    mesh->sjy  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"sjy");
-
-    mesh->ro    = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"ro");
-    mesh->uu    = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"uu");
-    mesh->vv    = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"vv");
-    mesh->pp    = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"pp");
-    mesh->rocv = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"rocv");
-    mesh->uucv = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"uucv");
-    mesh->vvcv = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"vvcv");
-    mesh->ppcv = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"ppcv");
-
-    mesh->speci = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"speci");
-    mesh->specj = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"specj");
-
-    mesh->dt    = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"dt");
-    mesh->ro0   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"ro0");
-    mesh->ru0   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"ru0");
-    mesh->rv0   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"rv0");
-    mesh->re0   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"re0");
-    mesh->Ri_ro   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ri_ro");
-    mesh->Ri_uu   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ri_uu");
-    mesh->Ri_vv   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ri_vv");
-    mesh->Ri_pp   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ri_pp");
-    mesh->Ra_ro   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ra_ro");
-    mesh->Ra_uu   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ra_uu");
-    mesh->Ra_vv   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ra_vv");
-    mesh->Ra_pp   = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"Ra_pp");
-    mesh->tmp_ro  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"tmp_ro");
-    mesh->tmp_uu  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"tmp_uu");
-    mesh->tmp_vv  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"tmp_vv");
-    mesh->tmp_pp  = allocate_2d_arrays(mesh->himax+1,mesh->hjmax+1,"tmp_pp");
-
-
-
 }
 
 void Mesh::read_su2(string filename){

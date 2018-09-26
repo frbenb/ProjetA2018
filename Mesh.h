@@ -41,7 +41,7 @@ class Mesh {
             double** rho_nodes_; 
             double** u_nodes_;
             double** v_nodes_;
-            double** p_nodes_;   //cell vertexed
+            double** p_nodes_;   //vertexes
             double** rho_0_;
             double** u_0_;
             double** v_0_;
