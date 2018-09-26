@@ -13,6 +13,7 @@ InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), di
 InitialSystem::~InitialSystem(){
 	if (mesh_ != nullptr){
 		delete mesh_;
+		mesh_ = nullptr;
 	}
 }
 
