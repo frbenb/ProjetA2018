@@ -11,7 +11,9 @@ InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), di
 		cltarget_(0), dcl_(0.001), rms0_(0), mesh_(nullptr){}
 
 InitialSystem::~InitialSystem(){
-
+	if (mesh_ != nullptr){
+		delete mesh_;
+	}
 }
 
 void InitialSystem::readctrl(string controlFileName){
