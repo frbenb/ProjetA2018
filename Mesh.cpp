@@ -436,13 +436,6 @@ Mesh::~Mesh(){
     }
 }
 
-/*void Mesh::print(){
-
-    for (unsigned int i = 0; i < nshapes_; i++){
-        shapes_[i]->print();
-    }
-}*/
-
 void Mesh::write_tecplot(string filename){
 
     cout << "Saving to : " << filename << endl;
