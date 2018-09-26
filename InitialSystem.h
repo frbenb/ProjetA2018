@@ -6,6 +6,8 @@ and the input file.*/
 #ifndef INITIALSYSTEM_H_
 #define INITIALSYSTEM_H_
 
+#include <math.h>
+
 class InitialSystem
 {
 public:
