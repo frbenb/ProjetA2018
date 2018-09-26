@@ -12,7 +12,7 @@ int main(){
 
     Mesh* mesh = new Mesh();
     mesh->read_tecplot("./naca0012_129x129_1B_JAMESON.x");
-    //mesh->print();
+    mesh->print();
     mesh->write_tecplot("./test.x");
 
     return 0;

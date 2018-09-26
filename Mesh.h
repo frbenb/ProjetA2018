@@ -11,6 +11,8 @@ class Mesh {
             Mesh();
             ~Mesh();
 
+            const void print();
+
             //double geometryCalculation();
             void read_su2(string filename);
             void read_tecplot(string filename);
