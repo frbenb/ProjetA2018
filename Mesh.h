@@ -35,7 +35,7 @@ class Mesh {
 
             void dflux2(int level, int beta);
 
-            void update_solution();
+            void update_solution(int level, double alpha);
 
             void update_boundary();
 	

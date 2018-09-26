@@ -129,6 +129,13 @@ Mesh::~Mesh(){
 
     shapes_ = nullptr;
     nshapes_ = 0;*/
+
+    if(NSC_ != nullptr)
+    {
+        NSC_ = nullptr;
+    }
+    delete NSC_;
+
 }
 
 /*void Mesh::print(){
@@ -204,7 +211,7 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
         residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
         
-        update_solution(); // Implementation needed.
+        update_solution(level, ); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
@@ -212,9 +219,9 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
 }
 
-void Mesh::update_solution()
+void Mesh::update_solution(int level, double alfa)
 {
-    //TBD.
+    
 }
 
 void Mesh::update_boundary()
