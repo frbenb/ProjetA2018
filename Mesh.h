@@ -35,12 +35,13 @@ class Mesh {
 
             void dflux2(int level, int beta);
 
-            void update_solution(int level, double alpha);
+            void update_solution(int level, float alpha);
 
             void update_boundary();
 	
 	private:
             InitialSystem* NSC_;
+
             unsigned int imax_, jmax_;
             unsigned int imaxGhost_, jmaxGhost_;
             unsigned int nbKnots_;        	//total number of knots

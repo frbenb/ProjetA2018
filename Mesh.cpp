@@ -122,7 +122,8 @@ void Mesh::read_su2(string filename){
     }*/
 }
 
-Mesh::~Mesh(){
+Mesh::~Mesh()
+{
     /*for (unsigned int i = 0; i < nshapes_; i++){
         delete [] shapes_[i];
     }
@@ -211,7 +212,7 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
         residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
         
-        update_solution(level, ); // Implementation needed.
+        update_solution(level, NSC_->rk_alpha[istage]); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
@@ -219,9 +220,36 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
 }
 
-void Mesh::update_solution(int level, double alfa)
+void Mesh::update_solution(int level, float alfa)
 {
-    
+  int i,j;
+  double g,ronew,runew,rvnew,renew,**ro,**uu,**vv,**pp;
+  double **ro0,**ru0,**rv0,**re0,**dt;
+  double **Ri_ro,**Ri_uu,**Ri_vv,**Ri_pp;
+  
+  g=NSC_->gamma_;
+
+  ro = rho_; ro0=rho_0_; Ri_ro=residualInviscid_rho_;
+  uu= u_; ru0=u_0_; Ri_uu=residualInviscid_u_;
+  vv= v_; rv0=v_0_; Ri_vv=residualInviscid_v_;
+  pp= p_; re0=p_0_; Ri_pp=residualInviscid_p_; 
+  dt=deltaT_;
+
+  for (j=2;j<=rjmax_;j++)
+  {
+    for (i=2;i<=rimax_;i++)
+    {
+       ronew=ro0[i][j]-alfa*dt[i][j]*Ri_ro[i][j];
+       runew=ru0[i][j]-alfa*dt[i][j]*Ri_uu[i][j];
+       rvnew=rv0[i][j]-alfa*dt[i][j]*Ri_vv[i][j];
+       renew=re0[i][j]-alfa*dt[i][j]*Ri_pp[i][j];
+       
+       ro[i][j]=ronew;
+       uu[i][j]=runew/ronew;
+       vv[i][j]=rvnew/ronew;
+       pp[i][j]=(g-1.)*(renew-0.5*(runew*runew+rvnew*rvnew)/ronew);
+    }
+  }
 }
 
 void Mesh::update_boundary()
