@@ -39,8 +39,9 @@ public:
 
   float getrms0() const; //rms0?
 
-private:
   Mesh* mesh_;
+
+private:
   string ctrlfilename_, meshfilename_, title_;
   float pi_, gamma_, epsilon_; 
 

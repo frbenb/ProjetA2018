@@ -8,10 +8,10 @@ using namespace std;
 
 #define NDIMS 2 // CHECK move
 
-Mesh::Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu) : 
+Mesh::Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu, InitialSystem* NSC) : 
                 imax_(imax), jmax_(jmax), itl_(itl), itu_(itu), imaxGhost_(imax+2), jmaxGhost_(jmax+2), 
                 nbKnots_((imax+3)*(jmax+3)), numberOfCells_((imax+2)*(jmax+2)), 
-                rimax_(imax), rjmax_(jmax), inci_(jmax + 3), incj_(1){
+                rimax_(imax), rjmax_(jmax), inci_(jmax + 3), incj_(1), initSyst_(NSC){
 
     // himax is imaxGhost_
     // hjmax is jmaxGhost_
@@ -220,8 +220,8 @@ void Mesh::write_tecplot(string filename){
     tecplot_file << "VARIABLES=\"X\",\"Y\",\"RO\",\"U\",\"V\",\"P\"\n";
     tecplot_file << "ZONE T=\"FLOW_FIELD\" i=" << imax_ << " j=" << jmax_ << "\n"; // CHECK change to imax and jmax
 
-    for (int j = 2; j <= jmax_+1; j++){
-        for (int i = 2; i <= imax_+1; i++){
+    for (unsigned int j = 2; j <= jmax_+1; j++){
+        for (unsigned int i = 2; i <= imax_+1; i++){
             tecplot_file << x_[i][j] << " " << y_[i][j] << " " << rho_nodes_[i][j] << " " << u_nodes_[i][j] << " " << v_nodes_[i][j] << " " << p_nodes_[i][j] << "\n";
         }
     }

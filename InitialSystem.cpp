@@ -1,6 +1,7 @@
 #include "InitialSystem.h"
+#include "Mesh.h"
 #include <string>
-#include <ifstream>
+#include <fstream>
 
 using namespace std;
 
@@ -16,11 +17,10 @@ InitialSystem::~InitialSystem(){
 void InitialSystem::readctrl(string controlFileName){
 	unsigned int nread, imax, jmax, itl, itu, level, i;
 	float fdum, fdum1, fdum2, fdum3, fdum4;
-	string line, str, str1, str2;
+	string line, str, str1, str2, unusedString;
 	double unusedInput;
 
 	printf("reading %s\n",ctrlfilename_);
-	fpin=fopen(ctrlfilename_,"r");
 
 	ifstream fpin;
     fpin.open(controlFileName);
@@ -28,18 +28,25 @@ void InitialSystem::readctrl(string controlFileName){
 	fpin >> title_;
 	fpin >> str >> unusedInput >> str1;
 
-	level=0;
+	level=0; // ideally remove
 
-	fpin >> imax >> str >> jmax >> str1 >> itl >> str2 >> itu;
+	fpin >> imax >> str >> jmax >> str1 >> itl >> str2 >> itu >> unusedString; // last one is not in NSCODE, maybe remove
 	
+	mesh_ = new Mesh(imax,jmax,itl,itu, this);
 
-	nsc.mesh[level]=new_mesh(imax,jmax,itl,itu,level);
-	mesh=nsc.mesh[level];
-	printf("imax jmax %d %d\n",mesh->imax,mesh->jmax);
-	fgets(line,STLEN,fpin);
-	sscanf(line,"%s",nsc.meshfilename);
-	printf("grid is %s\n",nsc.meshfilename);
-	fgets(line,STLEN,fpin);
+	fpin >> meshfilename_;
+
+	// Or, you know, skip the line itself.
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+
+	fpin >>
+
+
+
 	fgets(line,STLEN,fpin);
 	nread=sscanf(line,"%f %f %f %f %f",&fdum,&fdum1,&fdum2,&fdum3,&fdum4);
 	printf("nread is %d\n",nread);
@@ -54,7 +61,7 @@ void InitialSystem::readctrl(string controlFileName){
 	else
 	{
 		nread=sscanf(line,"%f %f %s %f %f",&fdum,&fdum1,str,&fdum3,&fdum4);
-	printf("nread is %d\n",nread);
+		printf("nread is %d\n",nread);
 		if (nread!=5) printerror("mach alpha cl dcl reynolds not well specified");
 		nsc.mach=fdum;
 		nsc.alpha=fdum1;

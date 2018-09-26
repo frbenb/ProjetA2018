@@ -8,7 +8,7 @@ using namespace std;
 
 class Mesh {
 	public:
-            Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu);
+            Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu, InitialSystem* NSC);
             ~Mesh();
 
             const void print();
