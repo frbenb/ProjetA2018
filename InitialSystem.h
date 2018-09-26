@@ -1,5 +1,12 @@
+/*This class includes the following functions of NSCODE:
+  - initial_system
+  - initial_flow_parameter
+and the input file.*/
+
 #ifndef INITIALSYSTEM_H_
 #define INITIALSYSTEM_H_
+
+#include <math.h>
 
 class InitialSystem
 {
