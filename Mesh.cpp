@@ -197,7 +197,7 @@ void Mesh::read_tecplot(string filename){
 
     meshfile.close();
 }
-void Mesh::iterate_pseudo_timestep(int level, int nstage)
+void Mesh::iterate_pseudo_timestep(int nstage)
 {
     int istage;
 
@@ -208,11 +208,11 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
     for (istage=0;istage<nstage;istage++)
     {
         // TO CODE Here
-        spectral_radius(level);
+        spectral_radius();
 
-        residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        residual(NSC_->rk_beta[istage], istage, NSC_->dissip_);
         
-        update_solution(level, NSC_->rk_alpha[istage]); // Implementation needed.
+        update_solution(NSC_->rk_alpha[istage]); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
@@ -220,7 +220,7 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
 }
 
-void Mesh::update_solution(int level, float alfa)
+void Mesh::update_solution(float alfa)
 {
   int i,j;
   double g,ronew,runew,rvnew,renew,**ro,**uu,**vv,**pp;
@@ -313,7 +313,7 @@ void Mesh::save_w0()
 }
 
 
-void Mesh::spectral_radius(int level)
+void Mesh::spectral_radius()
 {
     unsigned int i,j;
     double **ro,**uu,**vv,**pp,g,**six,**siy,sx,sy,u_dot_n,cc;
@@ -364,7 +364,7 @@ void Mesh::spectral_radius(int level)
 
 }
 
-void Mesh::residual(int level, double beta, int istage,int dissip)
+void Mesh::residual(double beta, int istage,int dissip)
 {
     unsigned int i,j;
 
@@ -392,12 +392,12 @@ void Mesh::residual(int level, double beta, int istage,int dissip)
     }
   }
 
-  eflux(level);
+  eflux();
   
   if(beta>NSC_->epsilon_)
   {
-    if (dissip==1)dflux(level,beta);
-    if (dissip==2)dflux2(level,beta);
+    if (dissip==1)dflux(beta);
+    if (dissip==2)dflux2(beta);
   }
   
   for (j=0;j<=jmaxGhost_;j++)
@@ -415,18 +415,18 @@ void Mesh::residual(int level, double beta, int istage,int dissip)
 
 }
 
-void Mesh::eflux(int level)
+void Mesh::eflux()
 {
     //TBD.
 }
 
-void Mesh::dflux(int level, int beta)
+void Mesh::dflux( int beta)
 {
     //TBD.
 
 }
 
-void Mesh::dflux2(int level, int beta)
+void Mesh::dflux2(int beta)
 {
     //TBD.
 
