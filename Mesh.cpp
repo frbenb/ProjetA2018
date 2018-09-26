@@ -195,12 +195,245 @@ void Mesh::read_su2(string filename){
 }
 
 Mesh::~Mesh(){
-    /*for (unsigned int i = 0; i < nshapes_; i++){
-        delete [] shapes_[i];
+    unsigned int i;
+    if (x_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] x_[i];
+        }
+        delete [] x_;
+        x_ = nullptr;
     }
-
-    shapes_ = nullptr;
-    nshapes_ = 0;*/
+    if (y_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] y_[i];
+        }
+        delete [] y_;
+        y_ = nullptr;
+    }
+    if (cellArea_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] cellArea_[i];
+        }
+        delete [] cellArea_;
+        cellArea_ = nullptr;
+    }
+    if (normal_i_x_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] normal_i_x_[i];
+        }
+        delete [] normal_i_x_;
+        normal_i_x_ = nullptr;
+    }
+    if (normal_i_y_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] normal_i_y_[i];
+        }
+        delete [] normal_i_y_;
+        normal_i_y_ = nullptr;
+    }
+    if (normal_j_x_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] normal_j_x_[i];
+        }
+        delete [] normal_j_x_;
+        normal_j_x_ = nullptr;
+    }
+    if (normal_j_y_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] normal_j_y_[i];
+        }
+        delete [] normal_j_y_;
+        normal_j_y_ = nullptr;
+    }
+    if (rho_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] rho_[i];
+        }
+        delete [] rho_;
+        rho_ = nullptr;
+    }
+    if (u_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] u_[i];
+        }
+        delete [] u_;
+        u_ = nullptr;
+    }
+    if (v_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] v_[i];
+        }
+        delete [] v_;
+        v_ = nullptr;
+    }
+    if (p_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] p_[i];
+        }
+        delete [] p_;
+        p_ = nullptr;
+    }
+    if (rho_nodes_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] rho_nodes_[i];
+        }
+        delete [] rho_nodes_;
+        rho_nodes_ = nullptr;
+    }
+    if (u_nodes_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] u_nodes_[i];
+        }
+        delete [] u_nodes_;
+        u_nodes_ = nullptr;
+    }
+    if (v_nodes_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] v_nodes_[i];
+        }
+        delete [] v_nodes_;
+        v_nodes_ = nullptr;
+    }
+    if (p_nodes_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] p_nodes_[i];
+        }
+        delete [] p_nodes_;
+        p_nodes_ = nullptr;
+    }
+    if (rho_0_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] rho_0_[i];
+        }
+        delete [] rho_0_;
+        rho_0_ = nullptr;
+    }
+    if (u_0_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] u_0_[i];
+        }
+        delete [] u_0_;
+        u_0_ = nullptr;
+    }
+    if (v_0_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] v_0_[i];
+        }
+        delete [] v_0_;
+        v_0_ = nullptr;
+    }
+    if (p_0_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] p_0_[i];
+        }
+        delete [] p_0_;
+        p_0_ = nullptr;
+    }
+    if (speci_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] speci_[i];
+        }
+        delete [] speci_;
+        speci_ = nullptr;
+    }
+    if (specj_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] specj_[i];
+        }
+        delete [] specj_;
+        specj_ = nullptr;
+    }
+    if (deltaT_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] deltaT_[i];
+        }
+        delete [] deltaT_;
+        deltaT_ = nullptr;
+    }
+    if (residualInviscid_rho_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualInviscid_rho_[i];
+        }
+        delete [] residualInviscid_rho_;
+        residualInviscid_rho_ = nullptr;
+    }
+    if (residualInviscid_u_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualInviscid_u_[i];
+        }
+        delete [] residualInviscid_u_;
+        residualInviscid_u_ = nullptr;
+    }
+    if (residualInviscid_v_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualInviscid_v_[i];
+        }
+        delete [] residualInviscid_v_;
+        residualInviscid_v_ = nullptr;
+    }
+    if (residualInviscid_p_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualInviscid_p_[i];
+        }
+        delete [] residualInviscid_p_;
+        residualInviscid_p_ = nullptr;
+    }
+    if (residualDissip_rho_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualDissip_rho_[i];
+        }
+        delete [] residualDissip_rho_;
+        residualDissip_rho_ = nullptr;
+    }
+    if (residualDissip_u_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualDissip_u_[i];
+        }
+        delete [] residualDissip_u_;
+        residualDissip_u_ = nullptr;
+    }
+    if (residualDissip_v_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualDissip_v_[i];
+        }
+        delete [] residualDissip_v_;
+        residualDissip_v_ = nullptr;
+    }
+    if (residualDissip_p_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] residualDissip_p_[i];
+        }
+        delete [] residualDissip_p_;
+        residualDissip_p_ = nullptr;
+    }
+    if (tmp_rho_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] tmp_rho_[i];
+        }
+        delete [] tmp_rho_;
+        tmp_rho_ = nullptr;
+    }
+    if (tmp_u_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] tmp_u_[i];
+        }
+        delete [] tmp_u_;
+        tmp_u_ = nullptr;
+    }
+    if (tmp_v_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] tmp_v_[i];
+        }
+        delete [] tmp_v_;
+        tmp_v_ = nullptr;
+    }
+    if (tmp_p_ != nullptr){
+        for (i = 0; i < imaxGhost_+1; i++){
+            delete [] tmp_p_[i];
+        }
+        delete [] tmp_p_;
+        tmp_p_ = nullptr;
+    }
 }
 
 /*void Mesh::print(){
