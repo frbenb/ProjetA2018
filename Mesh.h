@@ -17,7 +17,7 @@ class Mesh {
             void read_tecplot(string filename);
             void write_tecplot(string filename);
 
-            void iterate_pseudo_timestep(int level, int nstage);
+            void iterate_pseudo_timestep(int nstage);
 
             void timestep();
                 
@@ -25,22 +25,23 @@ class Mesh {
 
             void save_w0();
 
-            void spectral_radius(int level);
+            void spectral_radius();
 
-            void residual(int level, double beta, int istage,int dissip);
+            void residual(double beta, int istage,int dissip);
 
-            void eflux(int level);
+            void eflux();
 
-            void dflux(int level, int beta);
+            void dflux(int beta);
 
-            void dflux2(int level, int beta);
+            void dflux2(int beta);
 
-            void update_solution();
+            void update_solution(float alpha);
 
             void update_boundary();
 	
 	private:
             InitialSystem* NSC_;
+
             unsigned int imax_, jmax_;
             unsigned int imaxGhost_, jmaxGhost_;
             unsigned int nbKnots_;        	//total number of knots

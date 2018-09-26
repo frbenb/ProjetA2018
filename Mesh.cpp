@@ -122,13 +122,21 @@ void Mesh::read_su2(string filename){
     }*/
 }
 
-Mesh::~Mesh(){
+Mesh::~Mesh()
+{
     /*for (unsigned int i = 0; i < nshapes_; i++){
         delete [] shapes_[i];
     }
 
     shapes_ = nullptr;
     nshapes_ = 0;*/
+
+    if(NSC_ != nullptr)
+    {
+        NSC_ = nullptr;
+    }
+    delete NSC_;
+
 }
 
 /*void Mesh::print(){
@@ -189,7 +197,7 @@ void Mesh::read_tecplot(string filename){
 
     meshfile.close();
 }
-void Mesh::iterate_pseudo_timestep(int level, int nstage)
+void Mesh::iterate_pseudo_timestep(int nstage)
 {
     int istage;
 
@@ -200,11 +208,11 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
     for (istage=0;istage<nstage;istage++)
     {
         // TO CODE Here
-        spectral_radius(level);
+        spectral_radius();
 
-        residual(level, NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        residual(NSC_->rk_beta[istage], istage, NSC_->dissip_);
         
-        update_solution(); // Implementation needed.
+        update_solution(NSC_->rk_alpha[istage]); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
@@ -212,9 +220,36 @@ void Mesh::iterate_pseudo_timestep(int level, int nstage)
 
 }
 
-void Mesh::update_solution()
+void Mesh::update_solution(float alfa)
 {
-    //TBD.
+  int i,j;
+  double g,ronew,runew,rvnew,renew,**ro,**uu,**vv,**pp;
+  double **ro0,**ru0,**rv0,**re0,**dt;
+  double **Ri_ro,**Ri_uu,**Ri_vv,**Ri_pp;
+  
+  g=NSC_->gamma_;
+
+  ro = rho_; ro0=rho_0_; Ri_ro=residualInviscid_rho_;
+  uu= u_; ru0=u_0_; Ri_uu=residualInviscid_u_;
+  vv= v_; rv0=v_0_; Ri_vv=residualInviscid_v_;
+  pp= p_; re0=p_0_; Ri_pp=residualInviscid_p_; 
+  dt=deltaT_;
+
+  for (j=2;j<=rjmax_;j++)
+  {
+    for (i=2;i<=rimax_;i++)
+    {
+       ronew=ro0[i][j]-alfa*dt[i][j]*Ri_ro[i][j];
+       runew=ru0[i][j]-alfa*dt[i][j]*Ri_uu[i][j];
+       rvnew=rv0[i][j]-alfa*dt[i][j]*Ri_vv[i][j];
+       renew=re0[i][j]-alfa*dt[i][j]*Ri_pp[i][j];
+       
+       ro[i][j]=ronew;
+       uu[i][j]=runew/ronew;
+       vv[i][j]=rvnew/ronew;
+       pp[i][j]=(g-1.)*(renew-0.5*(runew*runew+rvnew*rvnew)/ronew);
+    }
+  }
 }
 
 void Mesh::update_boundary()
@@ -278,7 +313,7 @@ void Mesh::save_w0()
 }
 
 
-void Mesh::spectral_radius(int level)
+void Mesh::spectral_radius()
 {
     unsigned int i,j;
     double **ro,**uu,**vv,**pp,g,**six,**siy,sx,sy,u_dot_n,cc;
@@ -329,7 +364,7 @@ void Mesh::spectral_radius(int level)
 
 }
 
-void Mesh::residual(int level, double beta, int istage,int dissip)
+void Mesh::residual(double beta, int istage,int dissip)
 {
     unsigned int i,j;
 
@@ -357,12 +392,12 @@ void Mesh::residual(int level, double beta, int istage,int dissip)
     }
   }
 
-  eflux(level);
+  eflux();
   
   if(beta>NSC_->epsilon_)
   {
-    if (dissip==1)dflux(level,beta);
-    if (dissip==2)dflux2(level,beta);
+    if (dissip==1)dflux(beta);
+    if (dissip==2)dflux2(beta);
   }
   
   for (j=0;j<=jmaxGhost_;j++)
@@ -380,18 +415,18 @@ void Mesh::residual(int level, double beta, int istage,int dissip)
 
 }
 
-void Mesh::eflux(int level)
+void Mesh::eflux()
 {
     //TBD.
 }
 
-void Mesh::dflux(int level, int beta)
+void Mesh::dflux( int beta)
 {
     //TBD.
 
 }
 
-void Mesh::dflux2(int level, int beta)
+void Mesh::dflux2(int beta)
 {
     //TBD.
 
