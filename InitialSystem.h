@@ -71,8 +71,8 @@ public:
 
   int itertot_;
 
-  FILE* file_cp;
-  FILE* file_conv;
+  FILE* file_cp_;
+  FILE* file_conv_;
 
 
 };
