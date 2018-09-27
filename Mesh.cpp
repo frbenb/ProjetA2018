@@ -880,6 +880,32 @@ void Mesh::eflux()
   }
 }
 
+void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
+{
+  int lp,i,j;
+  double r;
+  
+  /* taken from Anderson, Tannehill & Pletcher */
+
+  lp=il+1;  
+  for (i=lp;i<=iu;i++)
+  {
+    r=b[i]/d[i-1];
+    d[i]=d[i]-r*a[i-1];
+    c[i]=c[i]-r*c[i-1];
+  }
+  
+  c[iu]=c[iu]/d[iu];
+  for (i=lp;i<=iu;i++)
+  {
+    j=iu-i+il;
+    c[j]=(c[j]-a[j]*c[j+1])/d[j];
+  }
+  
+  return;
+  
+}
+
 void Mesh::dflux( int beta)
 {
     //TBD.

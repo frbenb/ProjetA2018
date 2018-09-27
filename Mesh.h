@@ -52,6 +52,8 @@ class Mesh {
             void initial_system();
 
             void mesh4halos();
+
+            void tridiagonal(int il,int iu,double *b,double *d,double *a, double *c);
             
 	private:
             InitialSystem* NSC_;
