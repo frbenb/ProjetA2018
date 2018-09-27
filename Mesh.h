@@ -13,12 +13,14 @@ using namespace std;
 
 class Mesh {
 	public:
-            Mesh();
+            Mesh(InitialSystem* NSC);
             ~Mesh();
+
+            const void print();
 
             //double geometryCalculation();
             void read_su2(string filename);
-            void read_tecplot(string filename);
+            void read_tecplot();
             void write_tecplot(string filename);
 
             void iterate_pseudo_timestep(int nstage);
@@ -70,7 +72,6 @@ class Mesh {
             unsigned int inci_, incj_;          //inci, incj - address  increments in i,j
             
             double** x_;                //x, y - mesh coordinates
-
             double** y_;
             double** cellArea_;         //area
             double** normal_i_x_; 		//six, siy - face i projections
@@ -85,7 +86,7 @@ class Mesh {
             double** rho_nodes_;        //rocv, uucv, vvcv, ppcv - primitive variables cell-vertex
             double** u_nodes_;
             double** v_nodes_;
-            double** p_nodes_;
+            double** p_nodes_;          // vertexes
             double** rho_0_;            //ro0, ru0, rv0, re0 - conservative variables rk(0)
             double** u_0_;
             double** v_0_;
