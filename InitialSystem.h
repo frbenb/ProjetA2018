@@ -1,9 +1,16 @@
+/*This class includes the following functions of NSCODE:
+  - initial_system
+  - initial_flow_parameter
+and the input file.*/
+
 #ifndef INITIALSYSTEM_H_
 #define INITIALSYSTEM_H_
 
 #define MAX_MGLEVEL 5
 
 #include <string>
+#include <math.h>
+#include <fstream>
 
 using namespace std;
 
@@ -13,40 +20,45 @@ public:
 	InitialSystem(); //Constructor
   ~InitialSystem();
 
-  void add_NSC_reference();
-
   void readctrl(string controlFileName);
+  void rungeKuttaInit();
+
 
   //Get methods:
-  float getPi() const;
-  float getGamma() const;
-  float getEpsilon() const;
+  double getPi() const;
+  double getGamma() const;
+  double getEpsilon() const;
   unsigned int getDissip() const;
   unsigned int getNbiter() const;
 
-  float getMach() const;
-  float getAlpha() const;
-  float getReynolds() const;
-  float getTinf() const;
-  float getXref() const;
-  float getYref() const;
-  float getCmac() const; //cmac?
-  float getRhoInfini() const;
-  float getUInfini() const;
-  float getVInfini() const;
-  float getPInfini() const;
+  double getMach() const;
+  double getAlpha() const;
+  double getReynolds() const;
+  double getTinf() const;
+  double getXref() const;
+  double getYref() const;
+  double getCmac() const; //cmac?
+  double getRhoInfini() const;
+  double getUInfini() const;
+  double getVInfini() const;
+  double getPInfini() const;
 
-  float getClTargert() const; //cltarget?
-  float getDcl() const; //dcl?
+  double getClTargert() const; //cltarget?
+  double getDcl() const; //dcl?
 
-  float getrms0() const; //rms0?
+  double getrms0() const; //rms0?
 
+  double getCfl() const;
+
+
+
+public:
   unsigned int imax_, jmax_, itl_, itu_;
   string meshfilename_;
 
 private:
   string ctrlfilename_, title_;
-  float pi_, gamma_, epsilon_; 
+  double pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
   unsigned int dissip_, nbiter_;
@@ -55,17 +67,30 @@ private:
   unsigned int itccfl_[MAX_MGLEVEL]; //iterate timestep
 
   /* flow & geometry properties */
-	float mach_, alpha_, reynolds_; //from "input file"
-  float tinf_;
-	float xref_, yref_, cmac_; //from "input file"
-  float rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+	double mach_, alpha_, reynolds_; //from "input file"
+  double tinf_;
+	double xref_, yref_, cmac_; //from "input file"
+  double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
   
   /*constant cl run */
-  float cltarget_;
-  float dcl_; //from "input file"
+  double cltarget_;
+  double dcl_; //from "input file"
 
   /*convergence*/
-  float rms0_;
+  double rms0_;
+
+
+  double cfl_;
+
+  double rk_beta_[5];
+  double rk_alpha_[5];
+  
+  int itertot_;
+
+  FILE* file_cp_;
+  FILE* file_conv_;
+
+
 };
 
 #endif

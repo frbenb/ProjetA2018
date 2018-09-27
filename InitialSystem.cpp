@@ -8,15 +8,29 @@ using namespace std;
 
 InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300),
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
-		rhoInfini_(0), uInfini_(0), vInfini_(0), pInfini_(0), 
+		rhoInfini_(1.0), uInfini_(0), vInfini_(0), pInfini_(1.0), 
 		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){
-	for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
-		rungekutta_[i] = 5;
-	}
-}
+		{
+      for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
+		    rungekutta_[i] = 5;
+	    }
+			uInfini_ = mach_*sqrt(gamma_)*cos(alpha_);
+			vInfini_ = mach_*sqrt(gamma_)*sin(alpha_);
+		}
 
 InitialSystem::~InitialSystem(){
 
+	if(file_cp_ != nullptr)
+	{
+    delete file_cp_;
+		file_cp_ = nullptr;
+	}
+
+	if(file_conv_ != nullptr)
+	{
+    delete file_conv_;
+		file_conv_ = nullptr;
+	}
 }
 
 void InitialSystem::readctrl(string controlFileName){
@@ -94,17 +108,17 @@ void InitialSystem::readctrl(string controlFileName){
 	fpin.close();
 }
 
-float InitialSystem::getPi() const
+double InitialSystem::getPi() const
 {
 	return pi_;
 }
 
-float InitialSystem::getGamma() const
+double InitialSystem::getGamma() const
 {
 	return gamma_;
 }
 
-float InitialSystem::getEpsilon() const
+double InitialSystem::getEpsilon() const
 {
 	return epsilon_;
 }
@@ -119,73 +133,86 @@ unsigned int InitialSystem::getNbiter() const
 	return nbiter_;
 }
 
-float InitialSystem::getMach() const
+double InitialSystem::getMach() const
 {
 	return mach_;
 }
 
-float InitialSystem::getAlpha() const
+double InitialSystem::getAlpha() const
 {
 	return alpha_;
 }
 
-float InitialSystem::getReynolds() const
+double InitialSystem::getReynolds() const
 {
 	return reynolds_;
 }
 
-float InitialSystem::getTinf() const
+double InitialSystem::getTinf() const
 {
 	return tinf_;
 }
 
-float InitialSystem::getXref() const
+double InitialSystem::getXref() const
 {
 	return xref_;
 }
 
-float InitialSystem::getYref() const
+double InitialSystem::getYref() const
 {
 	return yref_;
 }
 
-float InitialSystem::getCmac() const
+double InitialSystem::getCmac() const
 {
 	return cmac_;
 }
 
-float InitialSystem::getRhoInfini() const
+double InitialSystem::getRhoInfini() const
 {
 	return rhoInfini_;
 }
 
-float InitialSystem::getUInfini() const
+double InitialSystem::getUInfini() const
 {
 	return uInfini_;
 }
 
-float InitialSystem::getVInfini() const
+double InitialSystem::getVInfini() const
 {
 	return vInfini_;
 }
 
-float InitialSystem::getPInfini() const
+double InitialSystem::getPInfini() const
 {
 	return pInfini_;
 }
 
-float InitialSystem::getClTargert() const
+double InitialSystem::getClTargert() const
 {
 	return cltarget_;
 }
 
-float InitialSystem::getDcl() const
+double InitialSystem::getDcl() const
 {
 	return dcl_;
 }
 
-float InitialSystem::getrms0() const
+double InitialSystem::getrms0() const
 {
 	return rms0_;
 }
 
+void InitialSystem::rungeKuttaInit() 
+{
+	rk_alpha_[0]=0.25; 
+    rk_alpha_[1]=0.1666667; 
+    rk_alpha_[2]=0.375; 
+    rk_alpha_[3]=0.5; 
+    rk_alpha_[4]=1.0; 
+    rk_beta_[0]=1.0; 
+    rk_beta_[1]=0.0; 
+    rk_beta_[2]=0.56; 
+    rk_beta_[3]=0.0; 
+    rk_beta_[4]=0.44;
+}
