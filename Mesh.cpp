@@ -880,6 +880,51 @@ void Mesh::eflux()
   }
 }
 
+void Mesh::metric()
+{
+  int i,j;
+  double **x,**y,x1,y1,x2,y2;
+  
+
+  printf("in metric..........................................\n");
+  
+  /* area */
+  for (j=1;j<=rjmax_+1;j++)
+  {
+    for (i=1;i<=rimax_+1;i++)
+    {
+      x1=x[i+1][j+1]-x[i][j];
+      y1=y[i+1][j+1]-y[i][j];
+      x2=x[i][j+1]-x[i+1][j];
+      y2=y[i][j+1]-y[i+1][j];
+      cellArea_[i][j]=abs(0.5*(x1*y2-x2*y1));
+    }
+  }
+  
+  /* i direction */
+  for (j=1;j<=rjmax_+1;j++)
+  {
+    for (i=1;i<=rimax_+2;i++)
+    {
+      normal_i_x_[i][j]=   y[  i][j+1]-y[i][j];
+      normal_i_y_[i][j]= -(x[  i][j+1]-x[i][j]);
+    }
+  }
+  
+  /* j direction */
+  for (j=1;j<=rjmax_+2;j++)
+  {
+    for (i=1;i<=rimax_+1;i++)
+    {
+      normal_j_x_[i][j]=  (y[i][j  ]-y[i+1][j]);
+      normal_j_y_[i][j]= -(x[i][j  ]-x[i+1][j]);
+    }
+  }
+
+  printf("in metric..........................................DONE\n");
+}
+
+
 void Mesh::transCC_to_CV()
 {
 

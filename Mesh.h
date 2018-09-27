@@ -56,6 +56,8 @@ class Mesh {
             void tridiagonal(int il,int iu,double *b,double *d,double *a, double *c);
 
             void transCC_to_CV();
+
+            void metric();
             
 	private:
             InitialSystem* NSC_;
