@@ -25,17 +25,17 @@ InitialSystem::~InitialSystem(){
 
 }
 
-float InitialSystem::getPi() const
+double InitialSystem::getPi() const
 {
 	return pi_;
 }
 
-float InitialSystem::getGamma() const
+double InitialSystem::getGamma() const
 {
 	return gamma_;
 }
 
-float InitialSystem::getEpsilon() const
+double InitialSystem::getEpsilon() const
 {
 	return epsilon_;
 }
@@ -55,72 +55,72 @@ unsigned int InitialSystem::getRungekutta() const
 	return rungekutta_;
 }
 
-float InitialSystem::getMach() const
+double InitialSystem::getMach() const
 {
 	return mach_;
 }
 
-float InitialSystem::getAlpha() const
+double InitialSystem::getAlpha() const
 {
 	return alpha_;
 }
 
-float InitialSystem::getReynolds() const
+double InitialSystem::getReynolds() const
 {
 	return reynolds_;
 }
 
-float InitialSystem::getTinf() const
+double InitialSystem::getTinf() const
 {
 	return tinf_;
 }
 
-float InitialSystem::getXref() const
+double InitialSystem::getXref() const
 {
 	return xref_;
 }
 
-float InitialSystem::getYref() const
+double InitialSystem::getYref() const
 {
 	return yref_;
 }
 
-float InitialSystem::getCmac() const
+double InitialSystem::getCmac() const
 {
 	return cmac_;
 }
 
-float InitialSystem::getRhoInfini() const
+double InitialSystem::getRhoInfini() const
 {
 	return rhoInfini_;
 }
 
-float InitialSystem::getUInfini() const
+double InitialSystem::getUInfini() const
 {
 	return uInfini_;
 }
 
-float InitialSystem::getVInfini() const
+double InitialSystem::getVInfini() const
 {
 	return vInfini_;
 }
 
-float InitialSystem::getPInfini() const
+double InitialSystem::getPInfini() const
 {
 	return pInfini_;
 }
 
-float InitialSystem::getClTargert() const
+double InitialSystem::getClTargert() const
 {
 	return cltarget_;
 }
 
-float InitialSystem::getDcl() const
+double InitialSystem::getDcl() const
 {
 	return dcl_;
 }
 
-float InitialSystem::getrms0() const
+double InitialSystem::getrms0() const
 {
 	return rms0_;
 }
