@@ -62,7 +62,7 @@ class Mesh {
 	private:
             InitialSystem* NSC_;
 
-            unsigned int imax_, jmax_;          //imax, jmax
+            unsigned int imax_, jmax_, itl_, itu_;          //imax, jmax
             unsigned int imaxGhost_, jmaxGhost_;//himax, hjmax
             unsigned int nbKnots_;        	    //nbpt??? - total number of knots
             unsigned int numberOfCells_;	    //total number of cells
@@ -105,9 +105,6 @@ class Mesh {
             double** deltaT_;               //dt
             double** speci_;                //speci, specj
             double** specj_;
-
 };
 
 #endif
-
-
