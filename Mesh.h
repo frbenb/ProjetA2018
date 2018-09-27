@@ -45,6 +45,8 @@ class Mesh {
 	
             void monitor_convergence();
 
+            void initial_field();
+
 	private:
             InitialSystem* NSC_;
 
