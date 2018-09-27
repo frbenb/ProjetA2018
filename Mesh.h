@@ -1,11 +1,15 @@
 #ifndef MESH_H_
 #define MESH_H_
 
+#define sign(a) ((a)>=0) ? 1:-1
+
 #include <string>
 #include "math.h"
 #include "InitialSystem.h"
 
 using namespace std;
+
+
 
 class Mesh {
 	public:

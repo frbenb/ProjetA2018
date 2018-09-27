@@ -254,7 +254,135 @@ void Mesh::update_solution(float alfa)
 
 void Mesh::update_boundary()
 {
-    //TBD
+    int i,j,himax,hjmax,rimax;
+    double **ro,**uu,**vv,**pp,**sx,**sy,robc,uubc,vvbc,ppbc;
+    double ro1,uu1,vv1,pp1,ssx,ssy,ss,un1;
+    double g,gm1,cfree,chav_in,el,R4e,R4f,R4,chav_out,R5e,R5f,R5,
+            unbc,ccbc,dun,uubc_inlet,vvbc_inlet,ssbc_inlet,
+	       uubc_outlet,vvbc_outlet,ssbc_outlet,ela,elb,cc1,unf,ssbc,cc2;
+ 
+
+  himax=imaxGhost_;
+  hjmax=jmaxGhost_;
+  rimax=rimax_;
+
+  ro=rho_;
+  uu=u_;
+  vv=v_;
+  pp=p_;
+  
+  g=NSC_->gamma_;
+  gm1=g-1.;
+  cfree=sqrt(g*NSC_->pInfini_/NSC_->rhoInfini_);
+
+  /* jmin halos: wall*/
+  sx=normal_j_x_;
+  sy=normal_j_y_;
+  for (i=2;i<=rimax;i++)
+  {
+    ro1=ro[i][2];
+    uu1=uu[i][2];
+    vv1=vv[i][2];
+    pp1=pp[i][2];
+    ssx=sx[i][2];
+    ssy=sy[i][2];
+    ss=sqrt(ssx*ssx+ssy*ssy);
+    ssx/=ss; ssy/=ss;
+    ssx*=-1.; ssy*=-1.;
+    un1=uu1*ssx+vv1*ssy;
+
+    robc=ro1;
+    uubc=uu1-un1*ssx;
+    vvbc=vv1-un1*ssy;
+    ppbc=pp1;
+
+
+    ro[i][1]=robc;
+    uu[i][1]=2.*uubc-uu1;
+    vv[i][1]=2.*vvbc-vv1;
+    pp[i][1]=ppbc;
+
+    ro[i][0]=robc;
+    uu[i][0]=uu[i][1];
+    vv[i][0]=vv[i][1];
+    pp[i][0]=pp[i][1];
+
+  }
+  /*jmax halos: far-field */
+  
+  for (i=2;i<=rimax;i++)
+  {
+
+    ro1=ro[i][hjmax-2];
+    uu1=uu[i][hjmax-2];
+    vv1=vv[i][hjmax-2];
+    pp1=pp[i][hjmax-2];
+    cc1=sqrt(g*pp1/ro1);
+    
+    ssx=sx[i][hjmax-1];
+    ssy=sy[i][hjmax-1];
+    ss=sqrt(ssx*ssx+ssy*ssy);
+    ssx/=ss; ssy/=ss;
+    ssx*=-1.; ssy*=-1.;
+    un1=uu1*ssx+vv1*ssy;
+    unf=NSC_->uInfini_*ssx+NSC_->vInfini_*ssy;
+    chav_in=unf+cfree;
+    el=sign(chav_in);
+    R4e=un1+2.*cc1/gm1;
+    R4f=unf+2.*cfree/gm1;
+    R4=0.5*((1+el)*R4f+(1.-el)*R4e);
+    chav_out=un1-cc1;
+    el=sign(chav_out);
+    R5e=un1-2.*cc1/gm1;
+    R5f=unf-2.*cfree/gm1;
+    R5=0.5*((1+el)*R5f+(1.-el)*R5e);
+    unbc=0.5*(R4+R5);
+    ccbc=0.25*(R4-R5)*gm1;
+    el=sign(unbc);
+    dun=unbc-unf;
+    uubc_inlet=NSC_->uInfini_+dun*ssx;
+    vvbc_inlet=NSC_->vInfini_+dun*ssy;
+    ssbc_inlet=NSC_->pInfini_/pow(NSC_->rhoInfini_,g);
+    dun=unbc-un1;
+    uubc_outlet=uu1+dun*ssx;
+    vvbc_outlet=vv1+dun*ssy;
+    ssbc_outlet=pp1/pow(ro1,g);
+    
+    ela=0.5*(1.+el);
+    elb=0.5*(1.-el);
+    uubc=ela*uubc_inlet+elb*uubc_outlet;
+    vvbc=ela*vvbc_inlet+elb*vvbc_outlet;
+    ssbc=ela*ssbc_inlet+elb*ssbc_outlet;
+    cc2=ccbc*ccbc;
+    robc=cc2/g/ssbc;
+    robc=pow(robc,1./gm1);
+    ppbc=robc*cc2/g;
+
+    ro[i][hjmax-1]=2.*robc- ro1;
+    uu[i][hjmax-1]=2.*uubc- uu1;
+    vv[i][hjmax-1]=2.*vvbc- vv1;
+    pp[i][hjmax-1]=2.*ppbc- pp1;
+
+    ro[i][hjmax]=2.*ro[i][hjmax-1]- ro1;
+    uu[i][hjmax]=2.*uu[i][hjmax-1]- uu1;
+    vv[i][hjmax]=2.*vv[i][hjmax-1]- vv1;
+    pp[i][hjmax]=2.*pp[i][hjmax-1]- pp1;
+
+  }
+
+  /* imin and imax halos: wall+connecting BC*/
+  for (j=0;j<=hjmax;j++)
+  {
+    ro[      0][j]=ro[rimax-1][j]; pp[      0][j]=pp[rimax-1][j];
+    ro[      1][j]=ro[rimax  ][j]; pp[      1][j]=pp[rimax  ][j];
+    ro[himax-1][j]=ro[      2][j]; pp[himax-1][j]=pp[	   2][j];
+    ro[himax  ][j]=ro[      3][j]; pp[himax  ][j]=pp[	   3][j];
+    
+    uu[      0][j]=uu[rimax-1][j]; vv[      0][j]=vv[rimax-1][j];
+    uu[      1][j]=uu[rimax  ][j]; vv[      1][j]=vv[rimax  ][j];
+    uu[himax-1][j]=uu[      2][j]; vv[himax-1][j]=vv[	   2][j];
+    uu[himax  ][j]=uu[      3][j]; vv[himax  ][j]=vv[	   3][j];
+  }
 }
 
 void Mesh::timestep()
