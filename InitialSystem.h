@@ -50,18 +50,19 @@ public:
 
   double getCfl() const;
 
-
-
 public:
   unsigned int imax_, jmax_, itl_, itu_;
   string meshfilename_;
+  double rk_beta_[5];
+  double rk_alpha_[5];
+  unsigned int dissip_;
 
 private:
   string ctrlfilename_, title_;
   double pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
-  unsigned int dissip_, nbiter_;
+  unsigned int nbiter_;
   unsigned int niter_[MAX_MGLEVEL]; // Number of iterations per run
   unsigned int rungekutta_[MAX_MGLEVEL];
   unsigned int itccfl_[MAX_MGLEVEL]; //iterate timestep
@@ -79,18 +80,12 @@ private:
   /*convergence*/
   double rms0_;
 
-
   double cfl_;
-
-  double rk_beta_[5];
-  double rk_alpha_[5];
   
   int itertot_;
 
   FILE* file_cp_;
   FILE* file_conv_;
-
-
 };
 
 #endif

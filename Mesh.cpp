@@ -336,7 +336,7 @@ Mesh::~Mesh(){
         delete [] tmp_p_;
         tmp_p_ = nullptr;
     }
-}
+}} // CHECK why two }??
 
 void Mesh::write_tecplot(string filename){
 
@@ -404,9 +404,9 @@ void Mesh::iterate_pseudo_timestep(int nstage)
         // TO CODE Here
         spectral_radius();
 
-        residual(NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        residual(NSC_->rk_beta_[istage], istage, NSC_->dissip_);
         
-        update_solution(NSC_->rk_alpha[istage]); // Implementation needed.
+        update_solution(NSC_->rk_alpha_[istage]); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
