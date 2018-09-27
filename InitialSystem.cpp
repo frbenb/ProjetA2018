@@ -11,6 +11,18 @@ InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), di
 
 InitialSystem::~InitialSystem(){
 
+	if(file_cp_ != nullptr)
+	{
+		file_cp_ = nullptr;
+	}
+	delete file_cp_;
+
+	if(file_conv_ != nullptr)
+	{
+		file_conv_ = nullptr;
+	}
+	delete file_conv_;
+
 }
 
 float InitialSystem::getPi() const

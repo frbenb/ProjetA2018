@@ -43,6 +43,8 @@ class Mesh {
 
             void update_boundary();
 	
+            void monitor_convergence();
+
 	private:
             InitialSystem* NSC_;
 
