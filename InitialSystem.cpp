@@ -1,5 +1,4 @@
 #include "InitialSystem.h"
-#include "Mesh.h"
 #include <string>
 #include <fstream>
 
@@ -8,17 +7,16 @@ using namespace std;
 InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300), rungekutta_(5),
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(0), uInfini_(0), vInfini_(0), pInfini_(0), 
-		cltarget_(0), dcl_(0.001), rms0_(0), mesh_(nullptr){}
+		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){}
+
+
 
 InitialSystem::~InitialSystem(){
-	if (mesh_ != nullptr){
-		delete mesh_;
-		mesh_ = nullptr;
-	}
+
 }
 
 void InitialSystem::readctrl(string controlFileName){
-	unsigned int nread, imax, jmax, itl, itu, level, i;
+	unsigned int nread, imax, jmax, itl, itu, i;
 	float fdum, fdum1, fdum2, fdum3, fdum4;
 	string line, str, str1, str2, unusedString;
 	double unusedInput;
@@ -31,11 +29,7 @@ void InitialSystem::readctrl(string controlFileName){
 	fpin >> title_;
 	fpin >> str >> unusedInput >> str1;
 
-	level=0; // ideally remove
-
-	fpin >> imax >> str >> jmax >> str1 >> itl >> str2 >> itu >> unusedString; // last one is not in NSCODE, maybe remove
-	
-	mesh_ = new Mesh(imax,jmax,itl,itu, this);
+	fpin >> imax_ >> str >> jmax_ >> str1 >> itl_ >> str2 >> itu_ >> unusedString; // last one is not in NSCODE, maybe remove
 
 	fpin >> meshfilename_;
 
@@ -46,7 +40,7 @@ void InitialSystem::readctrl(string controlFileName){
 	fpin >> unusedString;
 	fpin >> unusedString;
 
-	fpin >>
+	/*fpin >>
 
 
 
@@ -83,7 +77,7 @@ void InitialSystem::readctrl(string controlFileName){
 	printf("%f %f %f\n",nsc.xref,nsc.yref,nsc.cmac);
 	
 	
-	/* solver */
+	// solver 
 	fgets(line,STLEN,fpin);
 	fgets(line,STLEN,fpin);
 	sscanf(line,"%d %f %f",&nsc.dissip,&fdum,&fdum1);
@@ -111,7 +105,7 @@ void InitialSystem::readctrl(string controlFileName){
 		if (nsc.itclevel[i]> nsc.coarsest_level) nsc.coarsest_level=nsc.itclevel[i];
 		printf("%5d %5d %5d %5d  %5d %10.5f\n",i,nsc.itclevel[i],nsc.niter[i],nsc.mglevel[i],nsc.rklevel[i],nsc.itccfl[i]);
 		printf("%5d\n",nsc.coarsest_level);
-	} 
+	}*/
 
 	fpin.close();
 }

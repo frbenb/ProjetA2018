@@ -8,10 +8,10 @@ using namespace std;
 
 #define NDIMS 2 // CHECK move
 
-Mesh::Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu, InitialSystem* NSC) : 
-                imax_(imax), jmax_(jmax), itl_(itl), itu_(itu), imaxGhost_(imax+2), jmaxGhost_(jmax+2), 
-                nbKnots_((imax+3)*(jmax+3)), numberOfCells_((imax+2)*(jmax+2)), 
-                rimax_(imax), rjmax_(jmax), inci_(jmax + 3), incj_(1), initSyst_(NSC){
+Mesh::Mesh(InitialSystem* NSC) : 
+                imax_(NSC->imax_), jmax_(NSC->jmax_), itl_(NSC->itl_), itu_(NSC->itu_), imaxGhost_(NSC->imax_+2), jmaxGhost_(NSC->jmax_+2), 
+                nbKnots_((NSC->imax_+3)*(NSC->jmax_+3)), numberOfCells_((NSC->imax_+2)*(NSC->jmax_+2)), 
+                rimax_(NSC->imax_), rjmax_(NSC->jmax_), inci_(NSC->jmax_ + 3), incj_(1), initSyst_(NSC){
 
     // himax is imaxGhost_
     // hjmax is jmaxGhost_
@@ -89,6 +89,10 @@ Mesh::Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int 
     }
     // fill other in loop, check that all in big comment above are dealt with, 
     // fill destructor, fix read functions, finish readCtrl, don't forget for read stuff to delete ry.
+}
+
+void Mesh::add_NSC_reference(InitialSystem* NSC){
+    initSyst_ = NSC;
 }
 
 void Mesh::read_su2(string filename){
@@ -456,9 +460,10 @@ void Mesh::write_tecplot(string filename){
     cout << "Saved to : " << filename << endl;
 }
 
-void Mesh::read_tecplot(string filename){
+void Mesh::read_tecplot(){
     unsigned int nblocks, imax, jmax, i, j;
     double point_coord;
+    string filename = initSyst_->meshfilename_;
 
     cout << "Filename: " << filename << endl;
 

@@ -2,7 +2,6 @@
 #define INITIALSYSTEM_H_
 
 #include <string>
-#include "Mesh.h"
 
 using namespace std;
 
@@ -11,6 +10,8 @@ class InitialSystem
 public:
 	InitialSystem(); //Constructor
   ~InitialSystem();
+
+  void add_NSC_reference();
 
   void readctrl(string controlFileName);
 
@@ -39,10 +40,11 @@ public:
 
   float getrms0() const; //rms0?
 
-  Mesh* mesh_;
+  unsigned int imax_, jmax_, itl_, itu_;
+  string meshfilename_;
 
 private:
-  string ctrlfilename_, meshfilename_, title_;
+  string ctrlfilename_, title_;
   float pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */

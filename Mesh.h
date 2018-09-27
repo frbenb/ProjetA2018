@@ -8,15 +8,16 @@ using namespace std;
 
 class Mesh {
 	public:
-            Mesh(unsigned int imax, unsigned int jmax, unsigned int itl, unsigned int itu, InitialSystem* NSC);
+            Mesh(InitialSystem* NSC);
             ~Mesh();
 
             const void print();
 
             //double geometryCalculation();
             void read_su2(string filename);
-            void read_tecplot(string filename);
+            void read_tecplot();
             void write_tecplot(string filename);
+            void add_NSC_reference(InitialSystem* NSC);
 	
 	private:
             InitialSystem* initSyst_;
