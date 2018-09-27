@@ -624,7 +624,7 @@ void Mesh::initial_flow_parameters()
     
   printf("in initial_flow_parameters..........................................\n");
 
-  g = NSC_->gamma_
+  g = NSC_->gamma_;
 
   alpha=NSC_->alpha_ * NSC_->pi_/180;
   mach=NSC_->mach_;
@@ -636,7 +636,6 @@ void Mesh::initial_flow_parameters()
 
   printf("in initial_flow_parameters..........................................DONE\n");
 }
-
 
 
 void Mesh::eflux()
