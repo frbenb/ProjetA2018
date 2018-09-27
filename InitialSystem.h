@@ -23,7 +23,6 @@ public:
   float getEpsilon() const;
   unsigned int getDissip() const;
   unsigned int getNbiter() const;
-  unsigned int getRungekutta() const;
 
   float getMach() const;
   float getAlpha() const;
@@ -50,11 +49,10 @@ private:
   float pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
-  unsigned int dissip_;
-  unsigned int nbiter_[MAX_MGLEVEL]; // Number of iterations per run
+  unsigned int dissip_, nbiter_;
+  unsigned int niter_[MAX_MGLEVEL]; // Number of iterations per run
   unsigned int rungekutta_[MAX_MGLEVEL];
   unsigned int itccfl_[MAX_MGLEVEL]; //iterate timestep
-  unsigned int niter_;
 
   /* flow & geometry properties */
 	float mach_, alpha_, reynolds_; //from "input file"

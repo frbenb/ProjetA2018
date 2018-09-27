@@ -2,12 +2,18 @@
 #include <string>
 #include <fstream>
 
+#define MAX_MGLEVEL 5
+
 using namespace std;
 
-InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300), rungekutta_(5),
+InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300),
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(0), uInfini_(0), vInfini_(0), pInfini_(0), 
-		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){}
+		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){
+			for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
+				rungekutta_[i] = 5;
+			}
+		}
 
 
 
@@ -16,8 +22,8 @@ InitialSystem::~InitialSystem(){
 }
 
 void InitialSystem::readctrl(string controlFileName){
-	unsigned int nread, imax, jmax, itl, itu, i;
-	double fdum, fdum1, fdum2, fdum3, fdum4;
+	unsigned int i;
+	double fdum, fdum1;
 	string line, str, str1, str2, unusedString;
 	double unusedInput;
 
@@ -72,7 +78,7 @@ void InitialSystem::readctrl(string controlFileName){
 	// Or, you know, skip the line itself.
 	fpin >> unusedString;
 
-	fpin >> niter_;
+	fpin >> nbiter_;
 
 	// Or, you kno, skip the line itself.
 	fpin >> unusedString;
@@ -83,8 +89,8 @@ void InitialSystem::readctrl(string controlFileName){
  
 	// coarsest_level_=0; // useless
 
-	for (i=0;i<niter_;i++){
-		fpin >> fdum >> nbiter_[i] >> fdum1 >> rungekutta_[i] >> itccfl_[i];
+	for (i=0;i<nbiter_;i++){
+		fpin >> fdum >> niter_[i] >> fdum1 >> rungekutta_[i] >> itccfl_[i];
 	}
 
 	fpin.close();
@@ -113,11 +119,6 @@ unsigned int InitialSystem::getDissip() const
 unsigned int InitialSystem::getNbiter() const
 {
 	return nbiter_;
-}
-
-unsigned int InitialSystem::getRungekutta() const
-{
-	return rungekutta_;
 }
 
 float InitialSystem::getMach() const
