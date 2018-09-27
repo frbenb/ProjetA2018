@@ -83,16 +83,8 @@ void InitialSystem::readctrl(string controlFileName){
  
 	// coarsest_level_=0; // useless
 
-	for (i=0;i<niter_;i++)
-	{
-		fpin >> 
-
-		fgets(line,STLEN,fpin);
-		sscanf(line,"%d %d %d  %d %f",&nsc.itclevel[i],&nsc.niter[i],&nsc.mglevel[i],&nsc.rklevel[i],&fdum);
-		nsc.itccfl[i]=fdum;
-		if (nsc.itclevel[i]> nsc.coarsest_level) nsc.coarsest_level=nsc.itclevel[i];
-		printf("%5d %5d %5d %5d  %5d %10.5f\n",i,nsc.itclevel[i],nsc.niter[i],nsc.mglevel[i],nsc.rklevel[i],nsc.itccfl[i]);
-		printf("%5d\n",nsc.coarsest_level);
+	for (i=0;i<niter_;i++){
+		fpin >> fdum >> nbiter_[i] >> fdum1 >> rungekutta_[i] >> itccfl_[i];
 	}
 
 	fpin.close();
