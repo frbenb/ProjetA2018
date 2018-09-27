@@ -880,6 +880,43 @@ void Mesh::eflux()
   }
 }
 
+void Mesh::transCC_to_CV()
+{
+
+  int i,j,inci,incj,ia0,ia1,ia2,ia3;
+  double *ro,*uu,*vv,*pp,*rocv,*uucv,*vvcv,*ppcv;
+
+  printf("in transCC_to_CV..........................................\n");
+  
+  inci=inci_;
+  incj=incj_;
+
+  ro=&(rho_[0][0]); rocv=&(rho_nodes_[0][0]);
+  uu=&(u_[0][0]); uucv=&(u_nodes_[0][0]);
+  vv=&(v_[0][0]); vvcv=&(v_nodes_[0][0]);
+  pp=&(p_[0][0]); ppcv=&(p_nodes_[0][0]);
+
+  for (j=2;j<=rjmax_+1;j++)
+  {
+    for (i=2;i<=rimax_+1;i++)
+    {
+       ia0= i   *inci+ j   *incj;
+       ia1=(i-1)*inci+ j   *incj;
+       ia2=(i-1)*inci+(j-1)*incj;
+       ia3= i   *inci+(j-1)*incj;
+       
+       rocv[ia0]=0.25*(ro[ia0]+ro[ia1]+ro[ia2]+ro[ia3]);
+       uucv[ia0]=0.25*(uu[ia0]+uu[ia1]+uu[ia2]+uu[ia3]);
+       vvcv[ia0]=0.25*(vv[ia0]+vv[ia1]+vv[ia2]+vv[ia3]);
+       ppcv[ia0]=0.25*(pp[ia0]+pp[ia1]+pp[ia2]+pp[ia3]);
+    
+    }
+  printf("in transCC_to_CV..........................................DONE\n");
+  return;
+}
+
+}
+
 void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
 {
   int lp,i,j;
