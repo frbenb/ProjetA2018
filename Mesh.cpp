@@ -543,6 +543,55 @@ void Mesh::residual(double beta, int istage,int dissip)
 
 }
 
+void Mesh::monitor_convergence()
+{
+    int i,j,rimax,rjmax;
+    double **pp,**sx,**sy,rms,ppbc,cpbc,cl,cd,dynhead,cmac,alpha,clwind,cdwind;
+
+    rimax=rimax_;
+    rjmax=rjmax_;
+
+    pp=p_;
+
+    /* jmin halos: wall*/
+    sx=normal_j_x_;
+    sy=normal_j_y_;
+    cmac=NSC_->cmac_/NSC_->cmac_;
+    dynhead=0.5*NSC_->gamma_*NSC_->mach_*NSC_->mach_;
+    alpha=NSC_->alpha_*NSC_->pi_/180.;
+    cl=0; cd=0.; 
+    j=2;
+
+    for (i=2;i<=rimax;i++)
+    {
+        ppbc=0.5*(pp[i][j]+pp[i][j-1]);
+        cpbc=(ppbc-1.)/dynhead;
+
+        if (NSC_->itertot_ == NSC_->nbiter_ - 1) fprintf(NSC_->file_cp_,
+            "%f %f %f\n",x_[i][j]*NSC_->cmac_,y_[i][j]*NSC_->cmac_,cpbc);
+    cl += -ppbc*sy[i][j];
+    cd += -ppbc*sx[i][j];
+    
+  }
+  cl=cl/(dynhead*cmac);
+  cd=cd/(dynhead*cmac);
+  
+  clwind=cl*cos(alpha) - cd*sin(alpha);
+  cdwind=cl*sin(alpha) + cd*cos(alpha);
+
+  rms=0.;
+  for (j=2;j<=rjmax;j++){
+    for (i=2;i<=rimax;i++){
+       rms+= residualInviscid_rho_[i][j]*residualInviscid_rho_[i][j];}}
+
+  rms=1./((rjmax-1)*(rimax-1))*sqrt(rms);
+  if (NSC_->itertot_==0) NSC_->rms0_=rms;
+
+  printf("%d   %f   %f  %f\n",NSC_->itertot_,log10(rms)-log10(NSC_->rms0_),clwind,cdwind);
+  fprintf(NSC_->file_conv_,"%d %f %f %f\n",NSC_->itertot_,log10(rms)-log10(NSC_->rms0_),clwind,cdwind);
+
+}
+
 void Mesh::eflux()
 {
     //TBD.

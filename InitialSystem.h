@@ -7,6 +7,7 @@ and the input file.*/
 #define INITIALSYSTEM_H_
 
 #include <math.h>
+#include <fstream>
 
 class InitialSystem
 {
@@ -67,6 +68,11 @@ public:
 
   float rk_beta[5];
   float rk_alpha[5];
+
+  int itertot_;
+
+  FILE* file_cp;
+  FILE* file_conv;
 
 
 };
