@@ -612,6 +612,16 @@ void Mesh::initial_flow_parameters()
   printf("in initial_flow_parameters..........................................DONE\n");
 }
 
+void Mesh::initial_system()
+{
+  printf("in initial_system..........................................\n");
+  NSC_->pi_=4.*atan(1.);
+  NSC_->gamma_=1.4;
+  NSC_->epsilon_=1.0e-28;
+  NSC_->file_conv_=fopen("conv","w");
+  NSC_->file_cp_=fopen("cp","w");
+  printf("in initial_system..........................................DONE\n");
+}
 
 
 void Mesh::initial_field()

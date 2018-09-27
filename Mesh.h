@@ -48,6 +48,9 @@ class Mesh {
             void initial_field();
 
             void initial_flow_parameters();
+
+            void initial_system();
+
 	private:
             InitialSystem* NSC_;
 
