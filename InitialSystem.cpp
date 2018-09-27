@@ -17,7 +17,7 @@ InitialSystem::~InitialSystem(){
 
 void InitialSystem::readctrl(string controlFileName){
 	unsigned int nread, imax, jmax, itl, itu, i;
-	float fdum, fdum1, fdum2, fdum3, fdum4;
+	double fdum, fdum1, fdum2, fdum3, fdum4;
 	string line, str, str1, str2, unusedString;
 	double unusedInput;
 
@@ -40,72 +40,60 @@ void InitialSystem::readctrl(string controlFileName){
 	fpin >> unusedString;
 	fpin >> unusedString;
 
-	/*fpin >>
 
+	fpin >> mach_ >> alpha_ >> cltarget_ >> dcl_ >> reynolds_;
+	// if cltarget is "no" and not a number, set to "NO_CLRUN"
+	// ..whatever that is.
 
+	tinf_ = 300.;
 
-	fgets(line,STLEN,fpin);
-	nread=sscanf(line,"%f %f %f %f %f",&fdum,&fdum1,&fdum2,&fdum3,&fdum4);
-	printf("nread is %d\n",nread);
-	if (nread==5)
-	{
-		nsc.mach=fdum;
-		nsc.alpha=fdum1;
-		nsc.cltarget=fdum2;
-		nsc.dcl=fdum3;
-		nsc.reynolds=fdum4;
-	}
-	else
-	{
-		nread=sscanf(line,"%f %f %s %f %f",&fdum,&fdum1,str,&fdum3,&fdum4);
-		printf("nread is %d\n",nread);
-		if (nread!=5) printerror("mach alpha cl dcl reynolds not well specified");
-		nsc.mach=fdum;
-		nsc.alpha=fdum1;
-		nsc.cltarget=NO_CLRUN;
-		nsc.dcl=fdum3;
-		nsc.reynolds=fdum4;
-	}
-	nsc.tinf=300.;
-	printf("%f %f %f %f %f %f\n",nsc.mach,nsc.alpha,nsc.cltarget,nsc.dcl,nsc.reynolds,nsc.tinf);  
-	fgets(line,STLEN,fpin);
-	fgets(line,STLEN,fpin);
-	sscanf(line,"%f %f %f",&fdum,&fdum1,&fdum2);
-	nsc.xref=fdum;	  
-	nsc.yref=fdum1;	  
-	nsc.cmac=fdum2;  
-	printf("%f %f %f\n",nsc.xref,nsc.yref,nsc.cmac);
+	// Or, you know, skip the line itself.
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+
+	fpin >> xref_ >> yref_ >> cmac_;
 	
-	
-	// solver 
-	fgets(line,STLEN,fpin);
-	fgets(line,STLEN,fpin);
-	sscanf(line,"%d %f %f",&nsc.dissip,&fdum,&fdum1);
-	nsc.vis2=fdum;
-	nsc.vis4=fdum1;
-	printf("dissip %d vis2 %f vis4 %f\n",nsc.dissip,nsc.vis2,nsc.vis4);
-	nsc.vis2=nsc.vis2/2.;  
-	nsc.vis4=nsc.vis4/32.;  
-	fgets(line,STLEN,fpin);
-	fgets(line,STLEN,fpin);
-	sscanf(line,"%f",&fdum);
-	nsc.ressmoo=fdum;
-	printf("ressmoo %f\n",nsc.ressmoo);  
-	fgets(line,STLEN,fpin);
-	fgets(line,STLEN,fpin);
-	sscanf(line,"%d",&nsc.nitc);
-	fgets(line,STLEN,fpin);
-	printf("   itc level  iter  mglevel  rk    cfl\n");  
-	nsc.coarsest_level=0;
-	for (i=0;i<nsc.nitc;i++)
+	// Or, you know, skip the line itself.
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+
+	fpin >> dissip_ >> fdum >> fdum1; // vis2 vis4
+
+	// Or, you kno, skip the line itself.
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+
+	fpin >> fdum; // residual smoothing
+
+	// Or, you know, skip the line itself.
+	fpin >> unusedString;
+
+	fpin >> niter_;
+
+	// Or, you kno, skip the line itself.
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+	fpin >> unusedString;
+ 
+	// coarsest_level_=0; // useless
+
+	for (i=0;i<niter_;i++)
 	{
+		fpin >> 
+
 		fgets(line,STLEN,fpin);
 		sscanf(line,"%d %d %d  %d %f",&nsc.itclevel[i],&nsc.niter[i],&nsc.mglevel[i],&nsc.rklevel[i],&fdum);
 		nsc.itccfl[i]=fdum;
 		if (nsc.itclevel[i]> nsc.coarsest_level) nsc.coarsest_level=nsc.itclevel[i];
 		printf("%5d %5d %5d %5d  %5d %10.5f\n",i,nsc.itclevel[i],nsc.niter[i],nsc.mglevel[i],nsc.rklevel[i],nsc.itccfl[i]);
 		printf("%5d\n",nsc.coarsest_level);
-	}*/
+	}
 
 	fpin.close();
 }

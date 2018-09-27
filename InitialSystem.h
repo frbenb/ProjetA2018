@@ -49,6 +49,7 @@ private:
 
 	/* constants from "input file" */
   unsigned int dissip_, nbiter_, rungekutta_;
+  unsigned int niter_;
 
   /* flow & geometry properties */
 	float mach_, alpha_, reynolds_; //from "input file"
