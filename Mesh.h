@@ -1,11 +1,15 @@
 #ifndef MESH_H_
 #define MESH_H_
 
+#define sign(a) ((a)>=0) ? 1:-1
+
 #include <string>
 #include "math.h"
 #include "InitialSystem.h"
 
 using namespace std;
+
+
 
 class Mesh {
 	public:
@@ -17,7 +21,7 @@ class Mesh {
             void read_tecplot(string filename);
             void write_tecplot(string filename);
 
-            void iterate_pseudo_timestep(int level, int nstage);
+            void iterate_pseudo_timestep(int nstage);
 
             void timestep();
                 
@@ -25,22 +29,27 @@ class Mesh {
 
             void save_w0();
 
-            void spectral_radius(int level);
+            void spectral_radius();
 
-            void residual(int level, double beta, int istage,int dissip);
+            void residual(double beta, int istage,int dissip);
 
             void eflux();
 
-            void dflux(int level, int beta);
+            void dflux(int beta);
 
-            void dflux2(int level, int beta);
+            void dflux2(int beta);
 
-            void update_solution();
+            void update_solution(float alpha);
 
             void update_boundary();
 	
+            void monitor_convergence();
+
+            void initial_field();
+
 	private:
             InitialSystem* NSC_;
+
             unsigned int imax_, jmax_;          //imax, jmax
             unsigned int imaxGhost_, jmaxGhost_;//himax, hjmax
             unsigned int nbKnots_;        	    //nbpt??? - total number of knots
@@ -49,6 +58,7 @@ class Mesh {
             unsigned int inci_, incj_;          //inci, incj - address  increments in i,j
             
             double** x_;                //x, y - mesh coordinates
+
             double** y_;
             double** cellArea_;         //area
             double** normal_i_x_; 		//six, siy - face i projections
