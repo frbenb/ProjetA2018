@@ -623,6 +623,39 @@ void Mesh::initial_system()
   printf("in initial_system..........................................DONE\n");
 }
 
+void Mesh::mesh4halos()
+{
+  int i,j,himax,hjmax;
+  double **x,**y;
+  
+
+  printf("in mesh4halos..........................................\n");
+  x=x;
+  y=y;
+  himax=imaxGhost_;
+  hjmax=jmaxGhost_;
+
+  /* imin and imax halos */
+  
+  for (j=2;j<hjmax;j++)
+  {
+    x[    0][j]=x[himax-3][j]; y[    0][j]=y[himax-3][j];
+    x[    1][j]=x[himax-2][j]; y[    1][j]=y[himax-2][j];
+    x[himax][j]=x[      3][j]; y[himax][j]=y[	   3][j];
+  }
+  /* jmin & jmax halos */
+  
+  for (i=0;i<=himax;i++)
+  {
+    x[i][    0]=x[i][      2]; y[i][	0]=y[i][      2];
+    x[i][    1]=x[i][      2]; y[i][	1]=y[i][      2];
+    x[i][hjmax]=x[i][hjmax-1]; y[i][hjmax]=y[i][hjmax-1];
+  }
+  
+  printf("in mesh4halos..........................................DONE\n");
+  return;
+}
+
 
 void Mesh::initial_field()
 {

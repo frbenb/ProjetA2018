@@ -51,6 +51,8 @@ class Mesh {
 
             void initial_system();
 
+            void mesh4halos();
+            
 	private:
             InitialSystem* NSC_;
 
