@@ -9,8 +9,6 @@
 
 using namespace std;
 
-
-
 class Mesh {
 	public:
             Mesh(InitialSystem* NSC);
