@@ -13,8 +13,15 @@
 using namespace std;
 
 int main(){
+    InitialSystem* init = new InitialSystem();
+
+    init->readctrl("input");
+
+    Mesh* mesh = new Mesh(init);
     
-    
+    mesh->read_tecplot();
+
+    mesh->write_tecplot("test.x");
 
     return 0;
 }

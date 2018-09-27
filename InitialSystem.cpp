@@ -10,12 +10,10 @@ InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), di
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(0), uInfini_(0), vInfini_(0), pInfini_(0), 
 		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){
-			for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
-				rungekutta_[i] = 5;
-			}
-		}
-
-
+	for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
+		rungekutta_[i] = 5;
+	}
+}
 
 InitialSystem::~InitialSystem(){
 
@@ -27,7 +25,7 @@ void InitialSystem::readctrl(string controlFileName){
 	string line, str, str1, str2, unusedString;
 	double unusedInput;
 
-	printf("reading %s\n",ctrlfilename_);
+	//printf("reading %s\n",ctrlfilename_);
 
 	ifstream fpin;
     fpin.open(controlFileName);
