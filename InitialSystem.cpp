@@ -125,3 +125,16 @@ double InitialSystem::getrms0() const
 	return rms0_;
 }
 
+void InitialSystem::rungeKuttaInit() 
+{
+	rk_alpha_[0]=0.25; 
+    rk_alpha_[1]=0.1666667; 
+    rk_alpha_[2]=0.375; 
+    rk_alpha_[3]=0.5; 
+    rk_alpha_[4]=1.0; 
+    rk_beta_[0]=1.0; 
+    rk_beta_[1]=0.0; 
+    rk_beta_[2]=0.56; 
+    rk_beta_[3]=0.0; 
+    rk_beta_[4]=0.44;
+}
