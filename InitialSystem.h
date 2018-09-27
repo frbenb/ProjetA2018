@@ -15,6 +15,8 @@ public:
 	InitialSystem(); //Constructor
   ~InitialSystem();
 
+  void rungeKuttaInit();
+
   //Get methods:
   double getPi() const;
   double getGamma() const;
@@ -43,6 +45,7 @@ public:
   double getCfl() const;
 
 
+
 public:
 
   double pi_, gamma_, epsilon_; 
@@ -66,9 +69,9 @@ public:
 
   double cfl_;
 
-  double rk_beta[5];
-  double rk_alpha[5];
-
+  double rk_beta_[5];
+  double rk_alpha_[5];
+  
   int itertot_;
 
   FILE* file_cp_;

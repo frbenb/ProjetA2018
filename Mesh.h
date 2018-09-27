@@ -57,7 +57,7 @@ class Mesh {
 
             void transCC_to_CV();
 
-            void metric();
+            void metric(); 
             
 	private:
             InitialSystem* NSC_;
@@ -106,6 +106,7 @@ class Mesh {
             double** deltaT_;               //dt
             double** speci_;                //speci, specj
             double** specj_;
+
 };
 
 #endif
