@@ -592,6 +592,33 @@ void Mesh::monitor_convergence()
 
 }
 
+void Mesh::initial_field()
+{
+  int i,j;
+  double **ro,**uu,**vv,**pp;
+  
+
+  printf("in initial_field..........................................\n");
+
+  ro=rho_;
+  uu=u_;
+  vv=v_;
+  pp=p_;
+
+  for (j=0;j<=jmaxGhost_;j++)
+  {
+    for (i=0;i<=imaxGhost_;i++)
+    {
+      ro[i][j]=NSC_->rhoInfini_;
+      uu[i][j]=NSC_->uInfini_;
+      vv[i][j]=NSC_->vInfini_;
+      pp[i][j]=NSC_->pInfini_;
+    }
+  }
+  printf("in initial_field..........................................DONE\n");
+}
+
+
 void Mesh::eflux()
 {
     //TBD.
