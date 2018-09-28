@@ -22,13 +22,13 @@ InitialSystem::~InitialSystem(){
 
 	if(file_cp_ != nullptr)
 	{
-    delete file_cp_;
+    	delete file_cp_;
 		file_cp_ = nullptr;
 	}
 
 	if(file_conv_ != nullptr)
 	{
-    delete file_conv_;
+    	delete file_conv_;
 		file_conv_ = nullptr;
 	}
 }
