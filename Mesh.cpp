@@ -416,7 +416,7 @@ void Mesh::iterate_pseudo_timestep(int nstage)
 
 void Mesh::update_solution(float alfa)
 {
-  int i,j;
+  unsigned int i,j;
   double g,ronew,runew,rvnew,renew,**ro,**uu,**vv,**pp;
   double **ro0,**ru0,**rv0,**re0,**dt;
   double **Ri_ro,**Ri_uu,**Ri_vv,**Ri_pp;
@@ -596,8 +596,7 @@ void Mesh::timestep()
            dt[i][j]= NSC_->cfl_ * area[i][j]/(speci[i][j]+specj[i][j]);
         }
 
-    }
-    
+    }  
 }
 
 void Mesh::save_w0()
@@ -629,9 +628,6 @@ void Mesh::save_w0()
         }
 
     }
-
-    return;
-
 }
 
 
@@ -680,10 +676,6 @@ void Mesh::spectral_radius()
             specj_[i][j]=abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
         }
     }
-
-    return;
-
-
 }
 
 void Mesh::residual(double beta, int istage,int dissip)
@@ -732,15 +724,11 @@ void Mesh::residual(double beta, int istage,int dissip)
         residualInviscid_p_[i][j]+=residualDissip_p_[i][j];
     }
   }
-
-  return;
-
 }
-
 
 void Mesh::monitor_convergence()
 {
-    int i,j,rimax,rjmax;
+    unsigned int i,j,rimax,rjmax;
     double **pp,**sx,**sy,rms,ppbc,cpbc,cl,cd,dynhead,cmac,alpha,clwind,cdwind;
 
     rimax=rimax_;
@@ -853,7 +841,7 @@ void Mesh::mesh4halos()
 
 void Mesh::initial_field()
 {
-  int i,j;
+  unsigned int i,j;
   double **ro,**uu,**vv,**pp;
   
 
