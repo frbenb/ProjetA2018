@@ -1068,7 +1068,7 @@ void Mesh::metric()
   double **x,**y,x1,y1,x2,y2;
   
 
-  printf("in metric..........................................\n");
+  cout << "in metric.........................................." << endl;
   
   /* area */
   for (j=1;j<=rjmax_+1;j++)
@@ -1103,7 +1103,7 @@ void Mesh::metric()
     }
   }
 
-  printf("in metric..........................................DONE\n");
+  cout << "in metric..........................................DONE" << endl;
 }
 
 
