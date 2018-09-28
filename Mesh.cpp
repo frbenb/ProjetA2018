@@ -391,9 +391,9 @@ void Mesh::read_tecplot(){
     meshfile.close();
 }
 
-void Mesh::iterate_pseudo_timestep(int nstage)
+void Mesh::iterate_pseudo_timestep(unsigned int nstage)
 {
-    int istage;
+    unsigned int istage;
 
     //Computation of the timestep.
     timestep();
@@ -416,7 +416,7 @@ void Mesh::iterate_pseudo_timestep(int nstage)
 
 void Mesh::update_solution(float alfa)
 {
-  int i,j;
+  unsigned int i,j;
   double g,ronew,runew,rvnew,renew,**ro,**uu,**vv,**pp;
   double **ro0,**ru0,**rv0,**re0,**dt;
   double **Ri_ro,**Ri_uu,**Ri_vv,**Ri_pp;
@@ -448,7 +448,7 @@ void Mesh::update_solution(float alfa)
 
 void Mesh::update_boundary()
 {
-    int i,j,himax,hjmax,rimax;
+    unsigned int i,j,himax,hjmax,rimax;
     double **ro,**uu,**vv,**pp,**sx,**sy,robc,uubc,vvbc,ppbc;
     double ro1,uu1,vv1,pp1,ssx,ssy,ss,un1;
     double g,gm1,cfree,chav_in,el,R4e,R4f,R4,chav_out,R5e,R5f,R5,
@@ -596,8 +596,7 @@ void Mesh::timestep()
            dt[i][j]= NSC_->cfl_ * area[i][j]/(speci[i][j]+specj[i][j]);
         }
 
-    }
-    
+    }  
 }
 
 void Mesh::save_w0()
@@ -629,9 +628,6 @@ void Mesh::save_w0()
         }
 
     }
-
-    return;
-
 }
 
 
@@ -680,13 +676,9 @@ void Mesh::spectral_radius()
             specj_[i][j]=abs(u_dot_n)+sqrt(cc*(sx*sx+sy*sy));
         }
     }
-
-    return;
-
-
 }
 
-void Mesh::residual(double beta, int istage,int dissip)
+void Mesh::residual(double beta, unsigned int istage, unsigned int dissip)
 {
     unsigned int i,j;
 
@@ -732,15 +724,11 @@ void Mesh::residual(double beta, int istage,int dissip)
         residualInviscid_p_[i][j]+=residualDissip_p_[i][j];
     }
   }
-
-  return;
-
 }
-
 
 void Mesh::monitor_convergence()
 {
-    int i,j,rimax,rjmax;
+    unsigned int i,j,rimax,rjmax;
     double **pp,**sx,**sy,rms,ppbc,cpbc,cl,cd,dynhead,cmac,alpha,clwind,cdwind;
 
     rimax=rimax_;
@@ -819,7 +807,7 @@ void Mesh::initial_system()
 
 void Mesh::mesh4halos()
 {
-  int i,j,himax,hjmax;
+  unsigned int i,j,himax,hjmax;
   double **x,**y;
   
 
@@ -853,7 +841,7 @@ void Mesh::mesh4halos()
 
 void Mesh::initial_field()
 {
-  int i,j;
+  unsigned int i,j;
   double **ro,**uu,**vv,**pp;
   
 
@@ -1076,7 +1064,7 @@ void Mesh::eflux()
 
 void Mesh::metric()
 {
-  int i,j;
+  unsigned int i,j;
   double **x,**y,x1,y1,x2,y2;
   
 
@@ -1122,7 +1110,7 @@ void Mesh::metric()
 void Mesh::transCC_to_CV()
 {
 
-  int i,j,inci,incj,ia0,ia1,ia2,ia3;
+  unsigned int i,j,inci,incj,ia0,ia1,ia2,ia3;
   double *ro,*uu,*vv,*pp,*rocv,*uucv,*vvcv,*ppcv;
 
   printf("in transCC_to_CV..........................................\n");
@@ -1156,9 +1144,9 @@ void Mesh::transCC_to_CV()
 
 }
 
-void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
+void Mesh::tridiagonal(unsigned int il,unsigned int iu,double *b,double *d,double *a, double *c)
 {
-  int lp,i,j;
+  unsigned int lp,i,j;
   double r;
   
   /* taken from Anderson, Tannehill & Pletcher */
@@ -1182,13 +1170,13 @@ void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
   
 }
 
-void Mesh::dflux( int beta)
+void Mesh::dflux(double beta)
 {
     //TBD.
 
 }
 
-void Mesh::dflux2(int beta)
+void Mesh::dflux2(double beta)
 {
     //TBD.
 

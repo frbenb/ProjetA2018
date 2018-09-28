@@ -21,7 +21,7 @@ class Mesh {
             void read_tecplot();
             void write_tecplot(string filename);
 
-            void iterate_pseudo_timestep(int nstage);
+            void iterate_pseudo_timestep(unsigned int nstage);
 
             void timestep();
                 
@@ -31,13 +31,13 @@ class Mesh {
 
             void spectral_radius();
 
-            void residual(double beta, int istage,int dissip);
+            void residual(double beta, unsigned int istage, unsigned int dissip);
 
             void eflux();
 
-            void dflux(int beta);
+            void dflux(double beta);
 
-            void dflux2(int beta);
+            void dflux2(double beta);
 
             void update_solution(float alpha);
 
@@ -53,7 +53,7 @@ class Mesh {
 
             void mesh4halos();
 
-            void tridiagonal(int il,int iu,double *b,double *d,double *a, double *c);
+            void tridiagonal(unsigned int il,unsigned int iu,double *b,double *d,double *a, double *c);
 
             void transCC_to_CV();
 
