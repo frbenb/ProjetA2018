@@ -265,7 +265,7 @@ Mesh::~Mesh(){
         }
         delete [] residualInviscid_u_;
         residualInviscid_u_ = nullptr;
-
+    }
     if (residualInviscid_v_ != nullptr){
         for (i = 0; i < imaxGhost_+1; i++){
             delete [] residualInviscid_v_[i];
@@ -336,7 +336,7 @@ Mesh::~Mesh(){
         delete [] tmp_p_;
         tmp_p_ = nullptr;
     }
-}} // CHECK why two }??
+}
 
 void Mesh::write_tecplot(string filename){
 
