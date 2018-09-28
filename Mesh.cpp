@@ -752,8 +752,8 @@ void Mesh::monitor_convergence()
     sx=normal_j_x_;
     sy=normal_j_y_;
     cmac=NSC_->cmac_/NSC_->cmac_;
-    dynhead=0.5*NSC_->gamma_*NSC_->mach_*NSC_->mach_;
-    alpha=NSC_->alpha_*NSC_->pi_/180.;
+    dynhead=0.5 * NSC_->gamma_ * NSC_->mach_ * NSC_->mach_;
+    alpha=NSC_->alpha_ * NSC_->pi_/180.;
     cl=0; cd=0.; 
     j=2;
 

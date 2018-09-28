@@ -56,10 +56,13 @@ public:
   double rk_beta_[5];
   double rk_alpha_[5];
   unsigned int dissip_;
+  double gamma_, cfl_, epsilon_, pi_;
+  double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+  double cmac_; //from "input file"
+  double alpha_, mach_; //from "input file"
 
 private:
   string ctrlfilename_, title_;
-  double pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
   unsigned int nbiter_;
@@ -68,10 +71,9 @@ private:
   unsigned int itccfl_[MAX_MGLEVEL]; //iterate timestep
 
   /* flow & geometry properties */
-	double mach_, alpha_, reynolds_; //from "input file"
+	double reynolds_; //from "input file"
   double tinf_;
-	double xref_, yref_, cmac_; //from "input file"
-  double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+	double xref_, yref_; //from "input file"
   
   /*constant cl run */
   double cltarget_;
@@ -79,8 +81,6 @@ private:
 
   /*convergence*/
   double rms0_;
-
-  double cfl_;
   
   int itertot_;
 
