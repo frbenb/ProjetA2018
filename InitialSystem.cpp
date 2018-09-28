@@ -10,25 +10,24 @@ InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), di
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(1.0), uInfini_(0), vInfini_(0), pInfini_(1.0), 
 		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){
-		{
-      for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
-		    rungekutta_[i] = 5;
-	    }
-			uInfini_ = mach_*sqrt(gamma_)*cos(alpha_);
-			vInfini_ = mach_*sqrt(gamma_)*sin(alpha_);
-		}
+    for (unsigned int i = 0; i < MAX_MGLEVEL; i++){
+		rungekutta_[i] = 5;
+	}
+	uInfini_ = mach_*sqrt(gamma_)*cos(alpha_);
+	vInfini_ = mach_*sqrt(gamma_)*sin(alpha_);
+}
 
 InitialSystem::~InitialSystem(){
 
 	if(file_cp_ != nullptr)
 	{
-    delete file_cp_;
+    	delete file_cp_;
 		file_cp_ = nullptr;
 	}
 
 	if(file_conv_ != nullptr)
 	{
-    delete file_conv_;
+    	delete file_conv_;
 		file_conv_ = nullptr;
 	}
 }

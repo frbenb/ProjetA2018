@@ -93,106 +93,7 @@ Mesh::Mesh(InitialSystem* NSC) :
 
 
 void Mesh::read_su2(string filename){
-    /*if (shapes_ != nullptr){
-        for (unsigned int i = 0; i < nshapes_; i++){
-            delete [] shapes_[i];
-        }
-        shapes_ = nullptr;
-        nshapes_ = 0;
-    }
-
-    cout << "Filename: " << filename << endl;
-
-    ifstream meshfile;
-    meshfile.open(filename);
-
-    if (!meshfile.is_open()){
-        cout << "File \"" << filename << "\" could not be opened." << endl;
-        return;
-    }
-
-    string token;
-    unsigned int Ndime, npoints, shape_id;
-
-    meshfile >> token >> Ndime;
-    if ((token.compare("NDIME=") == 0) && (Ndime != NDIMS)){
-        cout << "Wrong number of dimentions. Is " << Ndime << " in file, but " << NDIMS << " in code." << endl;
-        return;
-    }
-
-    meshfile >> token >> npoints;
-    if (token.compare("NPOIN=") != 0){
-        cout << "Can't fine NPOIN= token.";
-        return;
-    }
-
-    float** points = new float*[npoints];
-
-    float point_coord;
-    unsigned int point_index[8]; // Max number of points
-
-    for (unsigned int points_counter = 0; points_counter < npoints; points_counter++){
-        points[points_counter] = new float[NDIMS];
-        for (unsigned int dim = 0; dim < NDIMS; dim++){
-            meshfile >> point_coord;
-            points[points_counter][dim] = point_coord;
-        }
-    }
-
-    meshfile >> token >> nshapes_;
-    if (token.compare("NELEM=") != 0){
-        cout << "Can't fine NELEM= token.";
-        return;
-    }
-
-    shapes_  = new Shape*[nshapes_];
-    Shape* shape_toadd;
-
-    for (unsigned int shape_counter = 0; shape_counter < nshapes_; shape_counter++){
-        meshfile >> shape_id;
-        
-        switch (shape_id){
-            case 3:
-                meshfile >> point_index[0] >> point_index[1];
-                shape_toadd = new Line(points[point_index[0]], points[point_index[1]]);
-                shapes_[shape_counter] = shape_toadd;
-                break;
-
-            case 5:
-                meshfile >> point_index[0] >> point_index[1] >> point_index[2];
-                shape_toadd = new Triangle(points[point_index[0]], points[point_index[1]], points[point_index[2]]);
-                shapes_[shape_counter] = shape_toadd;
-                break;
-
-            case 9:
-                meshfile >> point_index[0] >> point_index[1] >> point_index[2] >> point_index[3];
-                shape_toadd = new Quad(points[point_index[0]], points[point_index[1]], points[point_index[2]], points[point_index[3]]);
-                shapes_[shape_counter] = shape_toadd;
-                break;
-
-            case 10:
-                cout << "10: Tetrahedral not implemented!" << endl;
-                break;
-
-            case 12:
-                cout << "12: Hexahedral not implemented!" << endl;
-                break;
-
-            case 13:
-                cout << "13: Prism not implemented!" << endl;
-                break;
-
-            case 14:
-                cout << "14: Pyramid not implemented!" << endl;
-                break;
-        }
-    }
-
-    meshfile.close();
-
-    for (unsigned int i = 0; i < npoints; i++){
-        delete [] points[i];
-    }*/
+    
 }
 
 Mesh::~Mesh(){
@@ -365,12 +266,6 @@ Mesh::~Mesh(){
         delete [] residualInviscid_u_;
         residualInviscid_u_ = nullptr;
 
-
-/*void Mesh::print(){
-
-    for (unsigned int i = 0; i < nshapes_; i++){
-        shapes_[i]->print();
-    }
     if (residualInviscid_v_ != nullptr){
         for (i = 0; i < imaxGhost_+1; i++){
             delete [] residualInviscid_v_[i];
@@ -441,7 +336,7 @@ Mesh::~Mesh(){
         delete [] tmp_p_;
         tmp_p_ = nullptr;
     }
-}
+}} // CHECK why two }??
 
 void Mesh::write_tecplot(string filename){
 
@@ -509,9 +404,9 @@ void Mesh::iterate_pseudo_timestep(int nstage)
         // TO CODE Here
         spectral_radius();
 
-        residual(NSC_->rk_beta[istage], istage, NSC_->dissip_);
+        residual(NSC_->rk_beta_[istage], istage, NSC_->dissip_);
         
-        update_solution(NSC_->rk_alpha[istage]); // Implementation needed.
+        update_solution(NSC_->rk_alpha_[istage]); // Implementation needed.
         update_boundary(); // Implementation needed.
 
     }
@@ -857,8 +752,8 @@ void Mesh::monitor_convergence()
     sx=normal_j_x_;
     sy=normal_j_y_;
     cmac=NSC_->cmac_/NSC_->cmac_;
-    dynhead=0.5*NSC_->gamma_*NSC_->mach_*NSC_->mach_;
-    alpha=NSC_->alpha_*NSC_->pi_/180.;
+    dynhead=0.5 * NSC_->gamma_ * NSC_->mach_ * NSC_->mach_;
+    alpha=NSC_->alpha_ * NSC_->pi_/180.;
     cl=0; cd=0.; 
     j=2;
 

@@ -50,47 +50,45 @@ public:
 
   double getCfl() const;
 
-
+  
 
 public:
   unsigned int imax_, jmax_, itl_, itu_;
   string meshfilename_;
+  double rk_beta_[5];
+  double rk_alpha_[5];
+  unsigned int dissip_;
+  double gamma_, cfl_, epsilon_, pi_;
+  double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+  double cmac_; //from "input file"
+  double alpha_, mach_; //from "input file"
+  int itertot_;
+
+  /* constants from "input file" */
+  unsigned int nbiter_;
+
+  FILE* file_cp_; // Should DEFINITELY not use those
+  FILE* file_conv_; // Should DEFINITELY not use those
+
+  /*convergence*/
+  double rms0_;
 
 private:
   string ctrlfilename_, title_;
-  double pi_, gamma_, epsilon_; 
 
 	/* constants from "input file" */
-  unsigned int dissip_, nbiter_;
   unsigned int niter_[MAX_MGLEVEL]; // Number of iterations per run
   unsigned int rungekutta_[MAX_MGLEVEL];
   unsigned int itccfl_[MAX_MGLEVEL]; //iterate timestep
 
   /* flow & geometry properties */
-	double mach_, alpha_, reynolds_; //from "input file"
+	double reynolds_; //from "input file"
   double tinf_;
-	double xref_, yref_, cmac_; //from "input file"
-  double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
+	double xref_, yref_; //from "input file"
   
   /*constant cl run */
   double cltarget_;
   double dcl_; //from "input file"
-
-  /*convergence*/
-  double rms0_;
-
-
-  double cfl_;
-
-  double rk_beta_[5];
-  double rk_alpha_[5];
-  
-  int itertot_;
-
-  FILE* file_cp_;
-  FILE* file_conv_;
-
-
 };
 
 #endif
