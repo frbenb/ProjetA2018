@@ -1289,7 +1289,40 @@ void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
 
 void Mesh::dflux( int beta)
 {
-    //TBD.
+    unsigned int i, j;
+    double gamma, lambda;
+
+    gamma = NSC_.getGamma();
+
+    ro = rho_[0][0];
+    Ra_ro = residualDissip_rho_[0][0];
+    
+    uu = u_[0][0];
+    Ra_uu = residualDissip_u_[0][0];;
+    
+    vv = v_[0][0];
+    Ra_vv = residualDissip_v_[0][0];;
+
+    pp = p_[0][0];
+    Ra_pp = residualDissip_p_[0][0];
+
+
+
+
+     int inci,incj,inc,idir,ia,ian,indexi,indexj;
+  _FLOAT vis2;
+  _FLOAT *ro,*uu,*vv,*pp,*spec,*area,re,ren;
+  _FLOAT *Ra_ro,*Ra_uu,*Ra_vv,*Ra_pp;
+  _FLOAT fl0,fl1,fl2,fl3,*flux0,*flux1,*flux2,*flux3;
+  S_mesh *mesh;
+  mesh=nsc.mesh[level];
+  vis2=nsc.vis2;
+
+  inci=mesh->inci;
+  incj=mesh->incj;
+
+  
+  area=&(mesh->area[0][0]);
 
 }
 
