@@ -391,9 +391,9 @@ void Mesh::read_tecplot(){
     meshfile.close();
 }
 
-void Mesh::iterate_pseudo_timestep(int nstage)
+void Mesh::iterate_pseudo_timestep(unsigned int nstage)
 {
-    int istage;
+    unsigned int istage;
 
     //Computation of the timestep.
     timestep();
@@ -678,7 +678,7 @@ void Mesh::spectral_radius()
     }
 }
 
-void Mesh::residual(double beta, int istage,int dissip)
+void Mesh::residual(double beta, unsigned int istage, unsignedint dissip)
 {
     unsigned int i,j;
 
@@ -1110,7 +1110,7 @@ void Mesh::metric()
 void Mesh::transCC_to_CV()
 {
 
-  int i,j,inci,incj,ia0,ia1,ia2,ia3;
+  unsigned int i,j,inci,incj,ia0,ia1,ia2,ia3;
   double *ro,*uu,*vv,*pp,*rocv,*uucv,*vvcv,*ppcv;
 
   printf("in transCC_to_CV..........................................\n");
@@ -1144,9 +1144,9 @@ void Mesh::transCC_to_CV()
 
 }
 
-void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
+void Mesh::tridiagonal(unsigned int il,unsigned int iu,double *b,double *d,double *a, double *c)
 {
-  int lp,i,j;
+  unsigned int lp,i,j;
   double r;
   
   /* taken from Anderson, Tannehill & Pletcher */
@@ -1170,13 +1170,13 @@ void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
   
 }
 
-void Mesh::dflux( int beta)
+void Mesh::dflux(double beta)
 {
     //TBD.
 
 }
 
-void Mesh::dflux2(int beta)
+void Mesh::dflux2(double beta)
 {
     //TBD.
 
