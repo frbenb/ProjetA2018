@@ -62,7 +62,7 @@ public:
   double rhoInfini_, uInfini_, vInfini_, pInfini_; //rho_free, u_free, v_free, p_free
   double cmac_; //from "input file"
   double alpha_, mach_; //from "input file"
-  int itertot_;
+  unsigned int itertot_;
 
   /* constants from "input file" */
   unsigned int nbiter_;

@@ -448,7 +448,7 @@ void Mesh::update_solution(float alfa)
 
 void Mesh::update_boundary()
 {
-    int i,j,himax,hjmax,rimax;
+    unsigned int i,j,himax,hjmax,rimax;
     double **ro,**uu,**vv,**pp,**sx,**sy,robc,uubc,vvbc,ppbc;
     double ro1,uu1,vv1,pp1,ssx,ssy,ss,un1;
     double g,gm1,cfree,chav_in,el,R4e,R4f,R4,chav_out,R5e,R5f,R5,
@@ -678,7 +678,7 @@ void Mesh::spectral_radius()
     }
 }
 
-void Mesh::residual(double beta, unsigned int istage, unsignedint dissip)
+void Mesh::residual(double beta, unsigned int istage, unsigned int dissip)
 {
     unsigned int i,j;
 
@@ -807,7 +807,7 @@ void Mesh::initial_system()
 
 void Mesh::mesh4halos()
 {
-  int i,j,himax,hjmax;
+  unsigned int i,j,himax,hjmax;
   double **x,**y;
   
 
@@ -1064,7 +1064,7 @@ void Mesh::eflux()
 
 void Mesh::metric()
 {
-  int i,j;
+  unsigned int i,j;
   double **x,**y,x1,y1,x2,y2;
   
 
