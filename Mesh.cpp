@@ -526,7 +526,7 @@ void Mesh::update_solution(float alfa)
   double **ro0,**ru0,**rv0,**re0,**dt;
   double **Ri_ro,**Ri_uu,**Ri_vv,**Ri_pp;
   
-  g=NSC_->gamma_;
+  g=NSC_->gamma;
 
   ro = rho_; ro0=rho_0_; Ri_ro=residualInviscid_rho_;
   uu= u_; ru0=u_0_; Ri_uu=residualInviscid_u_;
@@ -570,7 +570,7 @@ void Mesh::update_boundary()
   vv=v_;
   pp=p_;
   
-  g=NSC_->gamma_;
+  g=NSC_->gamma;
   gm1=g-1.;
   cfree=sqrt(g*NSC_->pInfini_/NSC_->rhoInfini_);
 
@@ -711,7 +711,7 @@ void Mesh::save_w0()
     double g, **ro, **uu, **vv, **pp;
     double **ro0, **ru0, **rv0, **re0; // Conservative variables.
     
-    g = NSC_->gamma_;
+    g = NSC_->gamma;
 
     ro = rho_;
     uu = u_;
@@ -857,7 +857,7 @@ void Mesh::monitor_convergence()
     sx=normal_j_x_;
     sy=normal_j_y_;
     cmac=NSC_->cmac_/NSC_->cmac_;
-    dynhead=0.5*NSC_->gamma_*NSC_->mach_*NSC_->mach_;
+    dynhead=0.5*NSC_->gamma*NSC_->mach_*NSC_->mach_;
     alpha=NSC_->alpha_*NSC_->pi_/180.;
     cl=0; cd=0.; 
     j=2;
@@ -898,7 +898,7 @@ void Mesh::initial_flow_parameters()
     
   printf("in initial_flow_parameters..........................................\n");
 
-  g = NSC_->gamma_;
+  g = NSC_->gamma;
 
   alpha=NSC_->alpha_ * NSC_->pi_/180;
   mach=NSC_->mach_;
@@ -915,7 +915,7 @@ void Mesh::initial_system()
 {
   printf("in initial_system..........................................\n");
   NSC_->pi_=4.*atan(1.);
-  NSC_->gamma_=1.4;
+  NSC_->gamma=1.4;
   NSC_->epsilon_=1.0e-28;
   NSC_->file_conv_=fopen("conv","w");
   NSC_->file_cp_=fopen("cp","w");
@@ -985,13 +985,13 @@ void Mesh::initial_field()
 void Mesh::eflux()
 {
     unsigned int i, j;
-    double gamma_; //Taken from NSC object
-    double rhoTemp_, uTemp_, vTemp_, pTemp_; //Temporary variables
-    double leftFlux_rho_, leftFlux_u_, leftFlux_v_, leftFlux_p_; //Flux on cell's left
-    double rightFlux_rho, rightFlux_u_, rightFlux_v_, rightFlux_p_; //Flux on cell's right
-    double sx_, sy_, un_, qq_; //???
+    double gamma; //Taken from NSC object
+    double rhoTemp, uTemp, vTemp, pTemp; //Temporary variables
+    double leftFlux_rho, leftFlux_u, leftFlux_v, leftFlux_p; //Flux on cell's left
+    double rightFlux_rho, rightFlux_u, rightFlux_v, rightFlux_p; //Flux on cell's right
+    double sx, sy, un, qq; //???
 
-    gamma_ = NSC_->getGamma();
+    gamma = NSC_->getGamma();
 
     for (j=0; j<=jmax_; j++)
     {
@@ -1009,38 +1009,38 @@ void Mesh::eflux()
     {
         for(i=2; i<=rimax_+1; i++)
         {
-            rhoTemp_ = rho_[i-1][j];
-            uTemp_ = u_[i-1][j];
-            uTemp_ = v_[i-1][j];
-            pTemp_ = p_[i-1][j];
-            sx_ = normal_i_x_[i][j];
-            sy_ = normal_i_y_[i][j];
-            un_ = uTemp_ * sx_ + uTemp_ * sy_;
-            qq_ = uTemp_ * uTemp_ + uTemp_ * uTemp_;
+            rhoTemp = rho_[i-1][j];
+            uTemp = u_[i-1][j];
+            uTemp = v_[i-1][j];
+            pTemp = p_[i-1][j];
+            sx = normal_i_x_[i][j];
+            sy = normal_i_y_[i][j];
+            un = uTemp * sx + uTemp * sy;
+            qq = uTemp * uTemp + uTemp * uTemp;
         
-            leftFlux_rho_ = rhoTemp_ * un_;
-            leftFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-            leftFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-            leftFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+            leftFlux_rho = rhoTemp * un;
+            leftFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+            leftFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+            leftFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
 
-            rhoTemp_ = rho_[i][j];
-            uTemp_ = u_[i][j];
-            vTemp_ = v_[i][j];
-            pTemp_ = p_[i][j];
-            sx_ = normal_i_x_[i][j];
-            sy_ = normal_i_y_[i][j];
-            un_ = uTemp_ * sx_ + vTemp_ * sy_;
-            qq_ = uTemp_ * uTemp_ + vTemp_ * vTemp_;
+            rhoTemp = rho_[i][j];
+            uTemp = u_[i][j];
+            vTemp = v_[i][j];
+            pTemp = p_[i][j];
+            sx = normal_i_x_[i][j];
+            sy = normal_i_y_[i][j];
+            un = uTemp * sx + vTemp * sy;
+            qq = uTemp * uTemp + vTemp * vTemp;
             
-            rightFlux_rho = rhoTemp_ * un_;
-            rightFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-            rightFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-            rightFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+            rightFlux_rho = rhoTemp * un;
+            rightFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+            rightFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+            rightFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
             
-            tmp_rho_[i][j] = 0.5 * (leftFlux_rho_ + rightFlux_rho);
-            tmp_u_[i][j] = 0.5 * (leftFlux_u_ + rightFlux_u_);
-            tmp_v_[i][j] = 0.5 * (leftFlux_v_ + rightFlux_v_);
-            tmp_p_[i][j] = 0.5 * (leftFlux_p_ + rightFlux_p_);
+            tmp_rho_[i][j] = 0.5 * (leftFlux_rho + rightFlux_rho);
+            tmp_u_[i][j] = 0.5 * (leftFlux_u + rightFlux_u);
+            tmp_v_[i][j] = 0.5 * (leftFlux_v + rightFlux_v);
+            tmp_p_[i][j] = 0.5 * (leftFlux_p + rightFlux_p);
         }
     }
 
@@ -1067,38 +1067,38 @@ void Mesh::eflux()
     {
         for(j=2; j<=rjmax_+1; j++)
         {
-            rhoTemp_ = rho_[i][j-1];
-            uTemp_ = u_[i][j-1];
-            vTemp_ = v_[i][j-1];
-            pTemp_ = p_[i][j-1];
-            sx_ = normal_j_x_[i][j];
-            sy_ = normal_j_y_[i][j];
-            un_ = uTemp_ * sx_ + vTemp_ * sy_;
-            qq_ = uTemp_ * uTemp_ + vTemp_ * vTemp_;
+            rhoTemp = rho_[i][j-1];
+            uTemp = u_[i][j-1];
+            vTemp = v_[i][j-1];
+            pTemp = p_[i][j-1];
+            sx = normal_j_x_[i][j];
+            sy = normal_j_y_[i][j];
+            un = uTemp * sx + vTemp * sy;
+            qq = uTemp * uTemp + vTemp * vTemp;
             
-            leftFlux_rho_ = rhoTemp_ * un_;
-            leftFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-            leftFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-            leftFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+            leftFlux_rho = rhoTemp * un;
+            leftFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+            leftFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+            leftFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
 
-            rhoTemp_ = rho_[i][j];
-            uTemp_ = u_[i][j];
-            vTemp_ = v_[i][j];
-            pTemp_ = p_[i][j];
-            sx_ = normal_j_x_[i][j];
-            sy_ = normal_j_y_[i][j];
-            un_ = uTemp_ * sx_ + vTemp_ * sy_;
-            qq_ = uTemp_ * uTemp_ + vTemp_ * vTemp_;
+            rhoTemp = rho_[i][j];
+            uTemp = u_[i][j];
+            vTemp = v_[i][j];
+            pTemp = p_[i][j];
+            sx = normal_j_x_[i][j];
+            sy = normal_j_y_[i][j];
+            un = uTemp * sx + vTemp * sy;
+            qq = uTemp * uTemp + vTemp * vTemp;
             
-            rightFlux_rho = rhoTemp_ * un_;
-            rightFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-            rightFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-            rightFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+            rightFlux_rho = rhoTemp * un;
+            rightFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+            rightFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+            rightFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
             
-            tmp_rho_[i][j] = 0.5 * (leftFlux_rho_ + rightFlux_rho);
-            tmp_u_[i][j] = 0.5 * (leftFlux_u_ + rightFlux_u_);
-            tmp_v_[i][j] = 0.5 * (leftFlux_v_ + rightFlux_v_);
-            tmp_p_[i][j]= 0.5 * (leftFlux_p_ + rightFlux_p_);           
+            tmp_rho_[i][j] = 0.5 * (leftFlux_rho + rightFlux_rho);
+            tmp_u_[i][j] = 0.5 * (leftFlux_u + rightFlux_u);
+            tmp_v_[i][j] = 0.5 * (leftFlux_v + rightFlux_v);
+            tmp_p_[i][j]= 0.5 * (leftFlux_p + rightFlux_p);           
         }
     }
 
@@ -1106,47 +1106,47 @@ void Mesh::eflux()
     j = 2;
     for(i=2; i<=rimax_; i++)
     {
-        rhoTemp_ = 0.5 * (rho_[i][j] + rho_[i][j-1]);
-        uTemp_ = 0.5 * (u_[i][j] + u_[i][j-1]);
-        vTemp_ = 0.5 * (v_[i][j] + v_[i][j-1]);
-        pTemp_ = 0.5 * (p_[i][j] + p_[i][j-1]);
-        sx_ = normal_j_x_[i][j];
-        sy_ = normal_j_y_[i][j];
-        un_ = uTemp_ * sx_ + vTemp_ * sy_;
-        qq_ = uTemp_ * uTemp_ + vTemp_ * vTemp_;
+        rhoTemp = 0.5 * (rho_[i][j] + rho_[i][j-1]);
+        uTemp = 0.5 * (u_[i][j] + u_[i][j-1]);
+        vTemp = 0.5 * (v_[i][j] + v_[i][j-1]);
+        pTemp = 0.5 * (p_[i][j] + p_[i][j-1]);
+        sx = normal_j_x_[i][j];
+        sy = normal_j_y_[i][j];
+        un = uTemp * sx + vTemp * sy;
+        qq = uTemp * uTemp + vTemp * vTemp;
 
-        rightFlux_rho = rhoTemp_ * un_;
-        rightFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-        rightFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-        rightFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+        rightFlux_rho = rhoTemp * un;
+        rightFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+        rightFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+        rightFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
 
         tmp_rho_[i][j] = rightFlux_rho;
-        tmp_u_[i][j] = rightFlux_u_;
-        tmp_v_[i][j] = rightFlux_v_;
-        tmp_p_[i][j] = rightFlux_p_;
+        tmp_u_[i][j] = rightFlux_u;
+        tmp_v_[i][j] = rightFlux_v;
+        tmp_p_[i][j] = rightFlux_p;
     }
 
   j = rjmax_ + 1;
   for(i=2; i<=rimax_; i++)
   {
-    rhoTemp_ = 0.5 * (rho_[i][j] + rho_[i][j-1]);
-    uTemp_ = 0.5 * (u_[i][j] + u_[i][j-1]);
-    vTemp_ = 0.5 * (v_[i][j] + v_[i][j-1]);
-    pTemp_ = 0.5 * (p_[i][j] + p_[i][j-1]);
-    sx_ = normal_j_x_[i][j];
-    sy_ = normal_j_y_[i][j];
-    un_ = uTemp_ * sx_ + vTemp_ * sy_;
-    qq_ = uTemp_ * uTemp_ + vTemp_ * vTemp_;
+    rhoTemp = 0.5 * (rho_[i][j] + rho_[i][j-1]);
+    uTemp = 0.5 * (u_[i][j] + u_[i][j-1]);
+    vTemp = 0.5 * (v_[i][j] + v_[i][j-1]);
+    pTemp = 0.5 * (p_[i][j] + p_[i][j-1]);
+    sx = normal_j_x_[i][j];
+    sy = normal_j_y_[i][j];
+    un = uTemp * sx + vTemp * sy;
+    qq = uTemp * uTemp + vTemp * vTemp;
 
-    rightFlux_rho = rhoTemp_ * un_;
-    rightFlux_u_ = rhoTemp_ * un_ * uTemp_ + pTemp_ * sx_;
-    rightFlux_v_ = rhoTemp_ * un_ * vTemp_ + pTemp_ * sy_;
-    rightFlux_p_ = rhoTemp_ * un_ * (0.5 * qq_ + gamma_/(gamma_ - 1.) * pTemp_/rhoTemp_);
+    rightFlux_rho = rhoTemp * un;
+    rightFlux_u = rhoTemp * un * uTemp + pTemp * sx;
+    rightFlux_v = rhoTemp * un * vTemp + pTemp * sy;
+    rightFlux_p = rhoTemp * un * (0.5 * qq + gamma/(gamma - 1.) * pTemp/rhoTemp);
 
     tmp_rho_[i][j] = rightFlux_rho;
-    tmp_u_[i][j] = rightFlux_u_;
-    tmp_v_[i][j] = rightFlux_v_;
-    tmp_p_[i][j] = rightFlux_p_;
+    tmp_u_[i][j] = rightFlux_u;
+    tmp_v_[i][j] = rightFlux_v;
+    tmp_p_[i][j] = rightFlux_p;
   }
 
   for(i=2; i<=rimax_; i++)
@@ -1289,13 +1289,17 @@ void Mesh::tridiagonal(int il,int iu,double *b,double *d,double *a, double *c)
 
 void Mesh::dflux( int beta)
 {
-    unsigned int i, j;
-    double gamma, lambda;
-
-    gamma = NSC_.getGamma();
+    unsigned int i, j, idir, jdir;
+    int ia, ian;
+    double lambda;
+    double ro, uu, vv, pp;
+    double Ra_rho, Ra_uu, Ra_vv, Ra_pp;
+    double spec, inc, indexi, indexj;
+    double re, ren;
+    double leftFlux_rho, leftFlux_u, leftFlux_v, leftFlux_p;
 
     ro = rho_[0][0];
-    Ra_ro = residualDissip_rho_[0][0];
+    Ra_rho = residualDissip_rho_[0][0];
     
     uu = u_[0][0];
     Ra_uu = residualDissip_u_[0][0];;
@@ -1306,24 +1310,87 @@ void Mesh::dflux( int beta)
     pp = p_[0][0];
     Ra_pp = residualDissip_p_[0][0];
 
+    for (j=0; j<=jmaxGhost_; j++)
+    {
+        for (i=0; i<=imaxGhost_; i++)
+        {
+        ia = i * inci_ + j * incj_;
+        tmp_rho_[ia] = 0.;
+        tmp_u_[ia] = 0.;
+        tmp_v_[ia] = 0.;
+        tmp_p_[ia] = 0.;
+        }
+    }
 
+    /* i and j direction */
+    for (idir=0; idir<=1; idir++)
+    { 
+        switch(idir)
+        {
+            case 0:
+            spec = speci_[0][0]);
+            inc = inci_;
+            indexi = rimax_ + 1;
+            indexj = rjmax_;
+            break;
 
+            case 1:
+            spec = specj_[0][0]);
+            inc = incj_;
+            indexi = rimax_;
+            indexj = rjmax_ + 1;
+            break;
+        }
 
-     int inci,incj,inc,idir,ia,ian,indexi,indexj;
-  _FLOAT vis2;
-  _FLOAT *ro,*uu,*vv,*pp,*spec,*area,re,ren;
-  _FLOAT *Ra_ro,*Ra_uu,*Ra_vv,*Ra_pp;
-  _FLOAT fl0,fl1,fl2,fl3,*flux0,*flux1,*flux2,*flux3;
-  S_mesh *mesh;
-  mesh=nsc.mesh[level];
-  vis2=nsc.vis2;
+        for (j=2; j<=indexj; j++)
+        {
+            for (i=2; i<=indexi; i++)
+            {
+                ia = i * inci_ + j * incj_;
+                ian = i * inci_ + j * incj_ - inc;
+                re = 0.5 * rho_[ia] * (u_[ia] * u_[ia] + v_[ia] * v_[ia]) + p_[ia]/(NSC_->getGamma() - 1.);
+                ren = 0.5 * rho_[ian] * (u_[ian] * u_[ian] + v_[ian] * v_[ian]) + p_[ian]/(NSC_->getGamma() - 1.);
+                lambda = 0.5 * (spec[ia] + spec[ian]);
+                
+                // leftFlux_rho =  * vis2 *(rho_[ia] - rho_[ian]);
+                // leftFlux_u = lambda * vis2 * (rho_[ia] * u_[ia] - rho_[ian] * u_[ian]);
+                // leftFlux_v = lambda * vis2 * (rho_[ia] * v_[ia] - rho_[ian] * v_[ian]);
+                // leftFlux_p = lambda * vis2 * (re + p_[ia] - ren - p_[ian]);
+                
+                // tmp_rho_[ia] += leftFlux_rho; 
+                // tmp_rho_[ian] -= leftFlux_rho;
 
-  inci=mesh->inci;
-  incj=mesh->incj;
+                // tmp_u_[ia] += leftFlux_u; 
+                // tmp_u_[ian] -= leftFlux_u;
 
-  
-  area=&(mesh->area[0][0]);
+                // tmp_v_[ia] += leftFlux_v; 
+                // tmp_v_[ian] -= leftFlux_v;
 
+                // tmp_p_[ia] += leftFlux_p; 
+                // tmp_p_[ian] -= leftFlux_p;
+            }
+        }
+
+        for (j=2; j<=rjmax_; j++)
+        {
+            for (i=2; i<=rimax_; i++)
+            {
+                ia = i * inci_ + j * incj_;
+                residualDissip_rho_[ia] = (1. - beta) * residualDissip_rho_[ia] + 
+                        beta * tmp_rho_[ia]/cellArea_[i][j];
+
+                residualDissip_u_[ia] = (1. - beta) * residualDissip_u_[ia] + 
+                        beta * tmp_u_[ia]/cellArea_[i][j];
+
+                residualDissip_v_[ia] = (1. - beta) * residualDissip_v_[ia] + 
+                        beta * tmp_v_[ia]/cellArea_[i][j];
+
+                residualDissip_p_[ia] = (1. - beta) * residualDissip_p_[ia] + 
+                        beta * tmp_p_[ia]/cellArea_[i][j];    
+            }
+        }
+    }
+    return;
 }
 
 void Mesh::dflux2(int beta)
