@@ -6,7 +6,7 @@
 
 using namespace std;
 
-InitialSystem::InitialSystem() : pi_(3.1416), gamma_(1.4), epsilon_(1.0e-28), dissip_(1), nbiter_(300),
+InitialSystem::InitialSystem() : gamma_(1.4), pi_(3.1416), epsilon_(1.0e-28), dissip_(1), nbiter_(300),
 		mach_(0.80), alpha_(1.25), reynolds_(11e6), tinf_(0), xref_(0.25), yref_(0), cmac_(1.0),
 		rhoInfini_(1.0), uInfini_(0), vInfini_(0), pInfini_(1.0), 
 		cltarget_(0), dcl_(0.001), rms0_(0), imax_(0), jmax_(0), itl_(0), itu_(0){
